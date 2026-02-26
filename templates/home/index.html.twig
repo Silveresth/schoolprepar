@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil - SchoolPrepar{% endblock %}
+
+{% block body %}
+<div class="p-5 mb-4 bg-light rounded-3 text-center">
+    <h1 class="display-5 fw-bold">Bienvenue sur SchoolPrepar</h1>
+    <p class="fs-4 text-muted">La plateforme qui connecte vos rêves aux bonnes études.</p>
+    <div class="d-flex justify-content-center">
+        <p class="fs-5 text-muted me-4">Découvrez nos statistiques :</p>
+        <ul class="list-group list-group-horizontal">
+            <li class="list-group-item">150 écoles référencées</li>
+            <li class="list-group-item">45 filières disponibles</li>
+            <li class="list-group-item">20 mentors à votre service</li>
+        </ul>
+    </div>
+    <a href="{{ path('quiz') }}" class="btn btn-primary btn-lg">Lancer un test d'orientation</a>
+</div>
+{% endblock %}
