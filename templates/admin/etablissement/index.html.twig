@@ -1,0 +1,49 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Établissements - SchoolPrepar{% endblock %}
+
+{% block page_header %}
+    <h1 class="h3 mb-3"><strong>Établissements</strong></h1>
+{% endblock %}
+
+{% block body %}
+
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="card-title mb-0">Liste des établissements ({{ etablissements|length }})</h5>
+        <a href="#!" class="btn btn-primary" onclick="alert('Fonction CRUD à implémenter'); return false;">Nouvel établissement</a>
+    </div>
+    <table class="table table-hover my-0">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Nom</th>
+                <th>Type</th>
+                <th>Ville</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for etablissement in etablissements %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td><strong>{{ etablissement.nom }}</strong></td>
+                <td>{{ etablissement.type }}</td>
+                <td>{{ etablissement.ville }}</td>
+                <td>
+                    <div class=\"btn-group\" role=\"group\">
+                        <a href=\"#!\" class=\"btn btn-sm btn-success\" onclick=\"alert('Fonction Edit à implémenter'); return false;\">Modifier</a>
+                        <a href=\"#!\" class=\"btn btn-sm btn-danger\" onclick=\"alert('Fonction Delete à implémenter'); return false;\">Supprimer</a>
+                    </div>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="4" class="text-center text-muted py-4">Aucun établissement pour le moment.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

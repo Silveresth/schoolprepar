@@ -1,0 +1,45 @@
+{% extends 'front/base.html.twig' %}
+
+{% block title %}Établissements - SchoolPrepar{% endblock %}
+
+{% block titre_de_page %}
+    <h1 class="h3 mb-3"><strong>Établissements</strong></h1>
+{% endblock %}
+
+{% block Contenu_principal %}
+
+<div class="card">
+    <div class="card-header">
+        <h5 class="card-title mb-0">Liste des établissements ({{ etablissements|length }})</h5>
+    </div>
+    <table class="table table-hover my-0">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Nom</th>
+                <th>Type</th>
+                <th>Ville</th>
+                <th>En savoir plus</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for etablissement in etablissements %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td><strong>{{ etablissement.nom }}</strong></td>
+                <td>{{ etablissement.type }}</td>
+                <td>{{ etablissement.ville }}</td>
+                <td>
+                    <a href=\"#!\" class=\"btn btn-outline-primary btn-sm\" onclick=\"alert('Page détail établissement à implémenter'); return false;\">En savoir plus</a>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="4" class="text-center text-muted py-4">Aucun établissement pour le moment.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

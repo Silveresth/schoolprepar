@@ -1,0 +1,229 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Dashboard - SchoolPrepar{% endblock %}
+
+{% block page_header %}
+    <h1 class="h3 mb-3"><strong>Tableau de bord</strong> SchoolPrepar</h1>
+{% endblock %}
+
+{% block body %}
+
+    {# ===== LIGNE 1 : Statistiques ===== #}
+    <div class="row">
+
+        <div class="col-xl-6 col-xxl-5 d-flex">
+            <div class="w-100">
+                <div class="row">
+
+                    {# Carte : Filières #}
+                    <div class="col-sm-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col mt-0">
+                                        <h5 class="card-title">Filières</h5>
+                                    </div>
+                                    <div class="col-auto">
+                                        <div class="stat text-primary">
+                                            <i class="align-middle" data-feather="book-open"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <h1 class="mt-1 mb-3">{{ stats.total_filieres ?? 0 }}</h1>
+                                <div class="mb-0">
+                                    <span class="text-success">+{{ stats.nouvelles_filieres ?? 0 }}</span>
+                                    <span class="text-muted">ce mois</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        {# Carte : Établissements #}
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col mt-0">
+                                        <h5 class="card-title">Établissements</h5>
+                                    </div>
+                                    <div class="col-auto">
+                                        <div class="stat text-primary">
+                                            <i class="align-middle" data-feather="map-pin"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <h1 class="mt-1 mb-3">{{ stats.total_etablissements ?? 0 }}</h1>
+                                <div class="mb-0">
+                                    <span class="text-muted">Au total</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        {# Carte : Élèves inscrits #}
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col mt-0">
+                                        <h5 class="card-title">Élèves inscrits</h5>
+                                    </div>
+                                    <div class="col-auto">
+                                        <div class="stat text-primary">
+                                            <i class="align-middle" data-feather="users"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <h1 class="mt-1 mb-3">{{ stats.total_eleves ?? 0 }}</h1>
+                                <div class="mb-0">
+                                    <span class="text-success">+{{ stats.nouveaux_eleves ?? 0 }}</span>
+                                    <span class="text-muted">cette semaine</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        {# Carte : Conseillers #}
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col mt-0">
+                                        <h5 class="card-title">Conseillers</h5>
+                                    </div>
+                                    <div class="col-auto">
+                                        <div class="stat text-primary">
+                                            <i class="align-middle" data-feather="star"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <h1 class="mt-1 mb-3">{{ stats.total_conseillers ?? 0 }}</h1>
+                                <div class="mb-0">
+                                    <span class="text-muted">Disponibles</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        {# Graphique d'activité #}
+        <div class="col-xl-6 col-xxl-7">
+            <div class="card flex-fill w-100">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Inscriptions ce mois</h5>
+                </div>
+                <div class="card-body py-3">
+                    <div class="chart chart-sm">
+                        <canvas id="chartjs-dashboard-line"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>{# fin row stats #}
+
+    {# ===== LIGNE 2 : Dernières filières ajoutées ===== #}
+    <div class="row">
+        <div class="col-12 col-lg-8 d-flex">
+            <div class="card flex-fill">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Dernières filières ajoutées</h5>
+                </div>
+                <table class="table table-hover my-0">
+                    <thead>
+                        <tr>
+                            <th>Nom de la filière</th>
+                            <th class="d-none d-xl-table-cell">Domaine</th>
+                            <th class="d-none d-xl-table-cell">Établissement</th>
+                            <th>Statut</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if dernieres_filieres is defined and dernieres_filieres is not empty %}
+                            {% for filiere in dernieres_filieres %}
+                            <tr>
+                                <td>{{ filiere.nom }}</td>
+                                <td class="d-none d-xl-table-cell">{{ filiere.domaine ?? '-' }}</td>
+                                <td class="d-none d-xl-table-cell">{{ filiere.etablissement ?? '-' }}</td>
+                                <td>
+                                    <span class="badge bg-success">Active</span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="4" class="text-center text-muted py-3">
+                                    Aucune filière pour le moment.
+                                    <a href="{{ path('admin_filiere_index') }}">En ajouter une ?</a>
+                                </td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        {# Derniers élèves inscrits #}
+        <div class="col-12 col-lg-4 d-flex">
+            <div class="card flex-fill w-100">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Derniers inscrits</h5>
+                </div>
+                <div class="card-body">
+                    {% if derniers_eleves is defined and derniers_eleves is not empty %}
+                        {% for eleve in derniers_eleves %}
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="flex-shrink-0">
+                                <i data-feather="user" class="text-primary"></i>
+                            </div>
+                            <div class="flex-grow-1 ms-2">
+                                <p class="mb-0 fw-bold">{{ eleve.nom }} {{ eleve.prenom }}</p>
+                                <small class="text-muted">{{ eleve.email }}</small>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-muted text-center py-3">Aucun élève inscrit pour le moment.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+    </div>{# fin row tableau #}
+
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Graphique inscriptions
+        var ctx = document.getElementById("chartjs-dashboard-line");
+        if (ctx) {
+            var gradient = ctx.getContext("2d").createLinearGradient(0, 0, 0, 225);
+            gradient.addColorStop(0, "rgba(215, 227, 244, 1)");
+            gradient.addColorStop(1, "rgba(215, 227, 244, 0)");
+
+            new Chart(ctx, {
+                type: "line",
+                data: {
+                    labels: ["Jan", "Fév", "Mar", "Avr", "Mai", "Juin", "Juil", "Août", "Sep", "Oct", "Nov", "Déc"],
+                    datasets: [{
+                        label: "Inscriptions",
+                        fill: true,
+                        backgroundColor: gradient,
+                        borderColor: window.theme ? window.theme.primary : "#3B7DDD",
+                        data: [5, 12, 8, 20, 15, 30, 25, 40, 35, 50, 45, 60]
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { grid: { display: false } },
+                        y: { grid: { display: false }, ticks: { stepSize: 10 } }
+                    }
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}

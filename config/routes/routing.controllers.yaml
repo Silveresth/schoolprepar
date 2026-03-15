@@ -5,12 +5,3 @@ controllers:
     type: attribute
     prefix: /
 
-# Route pour la page d'accueil
-home:
-    path: /
-    controller: App\Controller\HomeController::index
-
-# Route pour la page d'orientation et du quiz
-quiz:
-    path: /orientation/quiz
-    controller: App\Controller\OrientationController::quiz

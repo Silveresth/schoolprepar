@@ -1,5 +1,10 @@
 # Titre: SchoolPrepar
 
+# Depot Git 
+
+**lien vers depot: https://github.com/Silveresth/schoolprepar**
+
+**cloner depot: git clone https://github.com/Silveresth/schoolprepar.git**
 
 # Documentation Symfony : https://symfony.com
 
