@@ -2,10 +2,6 @@
 
 namespace App\Controller\Front_office;
 
-use App\Repository\EtablissementRepository;
-use App\Repository\EvenementRepository;
-use App\Repository\FiliereRepository;
-use App\Repository\UtilisateurRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -13,20 +9,28 @@ use Symfony\Component\Routing\Annotation\Route;
 class HomeController extends AbstractController
 {
     #[Route('/', name: 'home')]
-    public function home(
-        FiliereRepository $filiereRepo,
-        EtablissementRepository $etablissementRepo,
-        UtilisateurRepository $utilisateurRepo,
-        EvenementRepository $evenementRepo
-    ): Response {
+    public function home(): Response
+    {
         return $this->render('front/home.html.twig', [
             'stats' => [
-                'total_filieres'       => $filiereRepo->count([]),
-                'total_etablissements' => $etablissementRepo->count([]),
-                'total_utilisateurs'   => $utilisateurRepo->count([]),
-                'total_evenements'     => $evenementRepo->count([]),
+                'total_filieres'       => 12,
+                'total_etablissements' => 8,
+                'total_eleves'         => 145,
+                'total_conseillers'    => 5,
+                'nouvelles_filieres'   => 2,
+                'nouveaux_eleves'      => 10,
             ],
-            'dernieres_filieres' => $filiereRepo->findBy([], ['id' => 'DESC'], 6),
+            'dernieres_filieres' => [
+                ['id' => 1, 'nom' => 'Informatique', 'domaine' => 'Sciences',   'etablissement' => 'Lycée Technique'],
+                ['id' => 2, 'nom' => 'Médecine',     'domaine' => 'Santé',      'etablissement' => 'Université de Lomé'],
+                ['id' => 3, 'nom' => 'Droit',        'domaine' => 'Juridique',  'etablissement' => 'Université de Lomé'],
+                ['id' => 4, 'nom' => 'Génie Civil',  'domaine' => 'BTP',        'etablissement' => 'ENSI'],
+            ],
+            'derniers_eleves' => [
+                ['nom' => 'Kofi',   'prenom' => 'Ama',   'email' => 'ama.kofi@email.com'],
+                ['nom' => 'Mensah', 'prenom' => 'Yao',   'email' => 'yao.mensah@email.com'],
+                ['nom' => 'Agbe',   'prenom' => 'Kossi', 'email' => 'kossi.agbe@email.com'],
+            ],
         ]);
     }
 }

@@ -1,72 +1,47 @@
 {% extends 'front/base.html.twig' %}
+
 {% block title %}Filières - SchoolPrepar{% endblock %}
 
-{% block body %}
+{% block titre_de_page %}
+    <h1 class="h3 mb-3"><strong>Filières</strong></h1>
+{% endblock %}
 
-{# Mini hero #}
-<div style="background:linear-gradient(195deg,#42424a,#191919);padding:7rem 0 4rem;color:#fff;">
-    <div class="container">
-        <p class="text-uppercase fw-bold small mb-2" style="color:#49a3f1;letter-spacing:2px;">Explorer</p>
-        <h1 class="fw-bold mb-3" style="font-size:2.5rem;">Toutes les filières</h1>
-        <p style="opacity:.8;">Découvrez l'ensemble des formations proposées par nos établissements partenaires.</p>
+{% block Contenu_principal %}
+
+<div class="card">
+    <div class="card-header">
+        <h5 class="card-title mb-0">Liste des filières ({{ filieres|length }})</h5>
     </div>
-</div>
-
-<section class="mk-section" style="background:#f8f9fa;">
-    <div class="container">
-
-        {% if filieres is empty %}
-        <div class="text-center py-5">
-            <i class="fas fa-book-open fa-3x text-muted mb-3"></i>
-            <p class="text-muted">Aucune filière disponible pour le moment.</p>
-            <a href="{{ path('home') }}" class="mk-btn-primary">Retour à l'accueil</a>
-        </div>
-        {% else %}
-        <div class="row mb-4 align-items-center">
-            <div class="col">
-                <h5 class="fw-bold mb-0" style="color:#344767;">{{ filieres|length }} filière{{ filieres|length > 1 ? 's' : '' }} disponible{{ filieres|length > 1 ? 's' : '' }}</h5>
-            </div>
-        </div>
-
-        <div class="row g-4">
+    <table class="table table-hover my-0">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Nom de la filière</th>
+                <th>Domaine</th>
+                <th>Établissement</th>
+                <th>Durée</th>
+                <th>En savoir plus</th>
+            </tr>
+        </thead>
+        <tbody>
             {% for filiere in filieres %}
-            <div class="col-md-6 col-xl-4">
-                <div class="mk-card card h-100">
-                    <div class="card-body p-4">
-                        <div class="d-flex align-items-start gap-3 mb-3">
-                            <div class="mk-card-icon bg-gradient-primary mb-0 flex-shrink-0" style="width:48px;height:48px;">
-                                <i class="fas fa-graduation-cap" style="font-size:1.1rem;"></i>
-                            </div>
-                            <div>
-                                <h6 class="fw-bold mb-1" style="color:#344767;">{{ filiere.nom }}</h6>
-                                <small class="text-muted">
-                                    <i class="fas fa-map-marker-alt me-1" style="color:#1A73E8;"></i>
-                                    {{ filiere.etablissement.nom }}
-                                </small>
-                            </div>
-                        </div>
-                        <p class="text-muted small mb-3" style="line-height:1.7;">
-                            {{ filiere.description|length > 120 ? filiere.description|slice(0,120) ~ '...' : filiere.description }}
-                        </p>
-                        <hr class="my-3" style="border-color:#f0f0f0;">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <small class="text-muted d-block">Niveau requis</small>
-                                <span class="mk-badge-pill">{{ filiere.niveauRequis }}</span>
-                            </div>
-                            <div class="text-end">
-                                <small class="text-muted d-block">Débouchés</small>
-                                <small class="fw-bold" style="color:#344767;">{{ filiere.debouche|slice(0,30) }}{{ filiere.debouche|length > 30 ? '...' : '' }}</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td><strong>{{ filiere.nom }}</strong></td>
+                <td>{{ filiere.domaine }}</td>
+                <td>{{ filiere.etablissement }}</td>
+                <td>{{ filiere.duree }}</td>
+                <td>
+                    <a href=\"#!\" class=\"btn btn-outline-primary btn-sm\" onclick=\"alert('Page détail filière à implémenter'); return false;\">En savoir plus</a>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="5" class="text-center text-muted py-4">Aucune filière pour le moment.</td>
+            </tr>
             {% endfor %}
-        </div>
-        {% endif %}
-
-    </div>
-</section>
+        </tbody>
+    </table>
+</div>
 
 {% endblock %}

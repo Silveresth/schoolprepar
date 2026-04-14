@@ -1,25 +1,51 @@
 {% extends 'admin/base.html.twig' %}
-{% block title %}Modifier filière - {{ filiere.nom }}{% endblock %}
+
+{% block title %}Modifier {{ filiere.nom ?? 'Filière' }} - SchoolPrepar{% endblock %}
+
 {% block page_header %}
-    <h1 class="h3 mb-3">Modifier : <strong>{{ filiere.nom }}</strong></h1>
+    <h1 class=\"h3 mb-3\"><strong>Modifier la Filière</strong></h1>
 {% endblock %}
+
 {% block body %}
-<div class="card">
-    <div class="card-header"><h5 class="card-title mb-0">Modifier la filière</h5></div>
-    <div class="card-body">
-        {{ form_start(form) }}
-        <div class="row">
-            <div class="col-md-6 mb-3">{{ form_row(form.nom) }}</div>
-            <div class="col-md-6 mb-3">{{ form_row(form.etablissement) }}</div>
-            <div class="col-md-6 mb-3">{{ form_row(form.niveau_requis) }}</div>
-            <div class="col-md-6 mb-3">{{ form_row(form.debouche) }}</div>
-            <div class="col-12 mb-3">{{ form_row(form.description) }}</div>
+<div class=\"row justify-content-center\">
+    <div class=\"col-12 col-lg-8\">
+        <div class=\"card\">
+            <div class=\"card-header\">
+                <h5 class=\"card-title mb-0\">Modifier la filière \"{{ filiere.nom ?? '' }}\"</h5>
+            </div>
+            <div class=\"card-body\">
+                <form method=\"post\" action=\"{{ path('admin_filiere_edit', {'id': filiere.id ?? ''}) }}\">
+                    <input type=\"hidden\" name=\"_method\" value=\"PUT\">
+                    
+                    {# Champs pré-remplis #}
+                    <div class=\"mb-3\">
+                        <label for=\"nom\" class=\"form-label\">Nom <span class=\"text-danger\">*</span></label>
+                        <input type=\"text\" class=\"form-control\" id=\"nom\" name=\"nom\" value=\"{{ filiere.nom ?? '' }}\" required>
+                    </div>
+                    
+                    <div class=\"mb-3\">
+                        <label for=\"domaine\" class=\"form-label\">Domaine <span class=\"text-danger\">*</span></label>
+                        <input type=\"text\" class=\"form-control\" id=\"domaine\" name=\"domaine\" value=\"{{ filiere.domaine ?? '' }}\" required>
+                    </div>
+                    
+                    <div class=\"mb-3\">
+                        <label for=\"etablissement\" class=\"form-label\">Établissement <span class=\"text-danger\">*</span></label>
+                        <input type=\"text\" class=\"form-control\" id=\"etablissement\" name=\"etablissement\" value=\"{{ filiere.etablissement ?? '' }}\" required>
+                    </div>
+                    
+                    <div class=\"mb-3\">
+                        <label for=\"duree\" class=\"form-label\">Durée <span class=\"text-danger\">*</span></label>
+                        <input type=\"text\" class=\"form-control\" id=\"duree\" name=\"duree\" value=\"{{ filiere.duree ?? '' }}\" required>
+                    </div>
+                    
+                    {# Boutons #}
+                    <div class=\"d-flex justify-content-between\">
+                        <a href=\"{{ path('admin_filiere') }}\" class=\"btn btn-secondary\">Annuler</a>
+                        <button type=\"submit\" class=\"btn btn-success\">Modifier la filière</button>
+                    </div>
+                </form>
+            </div>
         </div>
-        <div class="d-flex gap-2">
-            <button type="submit" class="btn btn-warning">Mettre à jour</button>
-            <a href="{{ path('admin_filiere_index') }}" class="btn btn-secondary">Annuler</a>
-        </div>
-        {{ form_end(form) }}
     </div>
 </div>
 {% endblock %}

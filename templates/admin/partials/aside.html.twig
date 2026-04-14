@@ -1,54 +1,51 @@
 <nav id="sidebar" class="sidebar js-sidebar">
     <div class="sidebar-content js-simplebar">
+
+        {# ---- Logo SchoolPrepar ---- #}
         <a class="sidebar-brand" href="{{ path('admin_dashboard') }}">
             <span class="align-middle">🎓 SchoolPrepar</span>
         </a>
+
         <ul class="sidebar-nav">
+
+            {# ---- Section principale ---- #}
             <li class="sidebar-header">Navigation</li>
-            <li class="sidebar-item {{ app.request.get('_route') starts with 'admin_dashboard' ? 'active' : '' }}">
+
+            <li class="sidebar-item {% if app.request.pathInfo starts with '/admin/dashboard' %}active{% endif %}">
                 <a class="sidebar-link" href="{{ path('admin_dashboard') }}">
                     <i class="align-middle" data-feather="home"></i>
-                    <span class="align-middle">Tableau de bord</span>
+                    <span class="align-middle">Dashboard</span>
                 </a>
             </li>
-            <li class="sidebar-header">Gestion</li>
-            <li class="sidebar-item {{ app.request.get('_route') starts with 'admin_etablissement' ? 'active' : '' }}">
-                <a class="sidebar-link" href="{{ path('admin_etablissement_index') }}">
-                    <i class="align-middle" data-feather="map-pin"></i>
-                    <span class="align-middle">Établissements</span>
-                </a>
-            </li>
-            <li class="sidebar-item {{ app.request.get('_route') starts with 'admin_filiere' ? 'active' : '' }}">
-                <a class="sidebar-link" href="{{ path('admin_filiere_index') }}">
+
+            {# ---- Section Orientation ---- #}
+            <li class="sidebar-header">Orientation</li>
+
+            <li class="sidebar-item {% if app.request.pathInfo starts with '/admin/filiere' %}active{% endif %}">
+                <a class="sidebar-link" href="{{ path('admin_filiere') }}">
                     <i class="align-middle" data-feather="book-open"></i>
-                    <span class="align-middle">Filières</span>
+                    <span class="align-middle">Gestion filières</span>
                 </a>
             </li>
-            <li class="sidebar-item {{ app.request.get('_route') starts with 'admin_utilisateur' ? 'active' : '' }}">
-                <a class="sidebar-link" href="{{ path('admin_utilisateur_index') }}">
-                    <i class="align-middle" data-feather="users"></i>
-                    <span class="align-middle">Utilisateurs</span>
+
+            <li class="sidebar-item {% if app.request.pathInfo starts with '/admin/etablissement' %}active{% endif %}">
+                <a class="sidebar-link" href="{{ path('admin_etablissement') }}">
+                    <i class="align-middle" data-feather="map-pin"></i>
+                    <span class="align-middle">Gestion etablissements</span>
                 </a>
             </li>
-            <li class="sidebar-item {{ app.request.get('_route') starts with 'admin_evenement' ? 'active' : '' }}">
-                <a class="sidebar-link" href="{{ path('admin_evenement_index') }}">
-                    <i class="align-middle" data-feather="calendar"></i>
-                    <span class="align-middle">Événements</span>
-                </a>
-            </li>
-            <li class="sidebar-header">Site</li>
-            <li class="sidebar-item">
-                <a class="sidebar-link" href="{{ path('home') }}">
-                    <i class="align-middle" data-feather="external-link"></i>
-                    <span class="align-middle">Voir le site</span>
-                </a>
-            </li>
-            <li class="sidebar-item">
-                <a class="sidebar-link" href="{{ path('app_logout') }}">
-                    <i class="align-middle" data-feather="log-out"></i>
-                    <span class="align-middle">Déconnexion</span>
-                </a>
-            </li>
+
         </ul>
+
+        {# ---- Bloc bas de sidebar ---- #}
+        <div class="sidebar-cta">
+            <div class="sidebar-cta-content">
+                <strong class="d-inline-block mb-2">SchoolPrepar</strong>
+                <div class="mb-3 text-sm">
+                    Aidons les jeunes à faire les bons choix pour leur avenir.
+                </div>
+            </div>
+        </div>
+
     </div>
 </nav>

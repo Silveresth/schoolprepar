@@ -1,19 +1,52 @@
 {% extends 'admin/base.html.twig' %}
-{% block title %}Modifier - {{ etablissement.nom }}{% endblock %}
-{% block page_header %}<h1 class="h3 mb-3">Modifier : <strong>{{ etablissement.nom }}</strong></h1>{% endblock %}
+
+{% block title %}Modifier {{ etablissement.nom ?? 'Établissement' }} - SchoolPrepar{% endblock %}
+
+{% block page_header %}
+    <h1 class=\"h3 mb-3\"><strong>Modifier l'Établissement</strong></h1>
+{% endblock %}
+
 {% block body %}
-<div class="card"><div class="card-header"><h5 class="card-title mb-0">Modifier l'établissement</h5></div>
-<div class="card-body">
-    {{ form_start(form) }}
-    <div class="row">
-        <div class="col-md-6 mb-3">{{ form_row(form.nom) }}</div>
-        <div class="col-md-6 mb-3">{{ form_row(form.ville) }}</div>
-        <div class="col-12 mb-3">{{ form_row(form.adresse) }}</div>
+<div class=\"row justify-content-center\">
+    <div class=\"col-12 col-lg-8\">
+        <div class=\"card\">
+            <div class=\"card-header\">
+                <h5 class=\"card-title mb-0\">Modifier l'établissement \"{{ etablissement.nom ?? '' }}\"</h5>
+            </div>
+            <div class=\"card-body\">
+                <form method=\"post\" action=\"{{ path('admin_etablissement_edit', {'id': etablissement.id ?? ''}) }}\">
+                    <input type=\"hidden\" name=\"_method\" value=\"PUT\">
+                    
+                    {# Champs pré-remplis #}
+                    <div class=\"mb-3\">
+                        <label for=\"nom\" class=\"form-label\">Nom <span class=\"text-danger\">*</span></label>
+                        <input type=\"text\" class=\"form-control\" id=\"nom\" name=\"nom\" value=\"{{ etablissement.nom ?? '' }}\" required>
+                    </div>
+                    
+                    <div class=\"mb-3\">
+                        <label for=\"type\" class=\"form-label\">Type <span class=\"text-danger\">*</span></label>
+                        <select class=\"form-select\" id=\"type\" name=\"type\" required>
+                            <option value=\"\">Choisir un type...</option>
+                            <option value=\"Lycée\" {{ (etablissement.type ?? '') == 'Lycée' ? 'selected' : '' }}>Lycée</option>
+                            <option value=\"Université\" {{ (etablissement.type ?? '') == 'Université' ? 'selected' : '' }}>Université</option>
+                            <option value=\"Grande école\" {{ (etablissement.type ?? '') == 'Grande école' ? 'selected' : '' }}>Grande école</option>
+                            <option value=\"Institut\" {{ (etablissement.type ?? '') == 'Institut' ? 'selected' : '' }}>Institut</option>
+                        </select>
+                    </div>
+                    
+                    <div class=\"mb-3\">
+                        <label for=\"ville\" class=\"form-label\">Ville <span class=\"text-danger\">*</span></label>
+                        <input type=\"text\" class=\"form-control\" id=\"ville\" name=\"ville\" value=\"{{ etablissement.ville ?? '' }}\" required>
+                    </div>
+                    
+                    {# Boutons #}
+                    <div class=\"d-flex justify-content-between\">
+                        <a href=\"{{ path('admin_etablissement') }}\" class=\"btn btn-secondary\">Annuler</a>
+                        <button type=\"submit\" class=\"btn btn-success\">Modifier l'établissement</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
-    <div class="d-flex gap-2">
-        <button type="submit" class="btn btn-warning">Mettre à jour</button>
-        <a href="{{ path('admin_etablissement_index') }}" class="btn btn-secondary">Annuler</a>
-    </div>
-    {{ form_end(form) }}
-</div></div>
+</div>
 {% endblock %}
