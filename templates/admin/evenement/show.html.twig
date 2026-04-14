@@ -1,0 +1,44 @@
+{% extends 'admin/base.html.twig' %}
+{% block title %}{{ evenement.titre }}{% endblock %}
+{% block page_header %}<h1 class="h3 mb-3">Événement : <strong>{{ evenement.titre }}</strong></h1>{% endblock %}
+{% block body %}
+<div class="row">
+    <div class="col-md-8">
+        <div class="card"><div class="card-header"><h5 class="card-title mb-0">Détails</h5></div>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-4">Titre</dt><dd class="col-sm-8">{{ evenement.titre }}</dd>
+                <dt class="col-sm-4">Date début</dt><dd class="col-sm-8">{{ evenement.dateDebut|date('d/m/Y H:i') }}</dd>
+                <dt class="col-sm-4">Date fin</dt><dd class="col-sm-8">{{ evenement.dateFin|date('d/m/Y H:i') }}</dd>
+                <dt class="col-sm-4">Lieu</dt><dd class="col-sm-8">{{ evenement.lieu }}</dd>
+                <dt class="col-sm-4">Établissement</dt><dd class="col-sm-8">{{ evenement.etablissement ? evenement.etablissement.nom : '-' }}</dd>
+                <dt class="col-sm-4">Description</dt><dd class="col-sm-8">{{ evenement.description }}</dd>
+            </dl>
+        </div></div>
+        {% if evenement.filieres|length > 0 %}
+        <div class="card mt-3"><div class="card-header"><h5 class="card-title mb-0">Filières concernées</h5></div>
+        <div class="card-body d-flex flex-wrap gap-2">
+            {% for f in evenement.filieres %}<span class="badge bg-primary fs-6">{{ f.nom }}</span>{% endfor %}
+        </div></div>
+        {% endif %}
+        {% if evenement.participants|length > 0 %}
+        <div class="card mt-3"><div class="card-header"><h5 class="card-title mb-0">Participants ({{ evenement.participants|length }})</h5></div>
+        <ul class="list-group list-group-flush">
+            {% for p in evenement.participants %}
+            <li class="list-group-item">{{ p.prenom }} {{ p.nom }} — <small class="text-muted">{{ p.email }}</small></li>
+            {% endfor %}
+        </ul></div>
+        {% endif %}
+    </div>
+    <div class="col-md-4">
+        <div class="card"><div class="card-body d-flex flex-column gap-2">
+            <a href="{{ path('admin_evenement_edit', {id: evenement.id}) }}" class="btn btn-warning w-100">Modifier</a>
+            <form method="post" action="{{ path('admin_evenement_delete', {id: evenement.id}) }}" onsubmit="return confirm('Supprimer cet événement ?')">
+                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ evenement.id) }}">
+                <button type="submit" class="btn btn-danger w-100">Supprimer</button>
+            </form>
+            <a href="{{ path('admin_evenement_index') }}" class="btn btn-secondary w-100">Retour</a>
+        </div></div>
+    </div>
+</div>
+{% endblock %}

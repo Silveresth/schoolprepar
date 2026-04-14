@@ -1,0 +1,139 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Tableau de bord - SchoolPrepar{% endblock %}
+
+{% block page_header %}
+    <h1 class="h3 mb-3"><strong>Tableau de bord</strong> SchoolPrepar</h1>
+{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="col-sm-6 col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col mt-0"><h5 class="card-title">Filières</h5></div>
+                    <div class="col-auto"><div class="stat text-primary"><i class="align-middle" data-feather="book-open"></i></div></div>
+                </div>
+                <h1 class="mt-1 mb-3">{{ stats.total_filieres }}</h1>
+                <a href="{{ path('admin_filiere_index') }}" class="text-muted small">Voir toutes les filières →</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col mt-0"><h5 class="card-title">Établissements</h5></div>
+                    <div class="col-auto"><div class="stat text-success"><i class="align-middle" data-feather="map-pin"></i></div></div>
+                </div>
+                <h1 class="mt-1 mb-3">{{ stats.total_etablissements }}</h1>
+                <a href="{{ path('admin_etablissement_index') }}" class="text-muted small">Voir tous →</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col mt-0"><h5 class="card-title">Utilisateurs</h5></div>
+                    <div class="col-auto"><div class="stat text-warning"><i class="align-middle" data-feather="users"></i></div></div>
+                </div>
+                <h1 class="mt-1 mb-3">{{ stats.total_utilisateurs }}</h1>
+                <a href="{{ path('admin_utilisateur_index') }}" class="text-muted small">Voir tous →</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col mt-0"><h5 class="card-title">Événements</h5></div>
+                    <div class="col-auto"><div class="stat text-danger"><i class="align-middle" data-feather="calendar"></i></div></div>
+                </div>
+                <h1 class="mt-1 mb-3">{{ stats.total_evenements }}</h1>
+                <a href="{{ path('admin_evenement_index') }}" class="text-muted small">Voir tous →</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12 col-lg-8 d-flex">
+        <div class="card flex-fill">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="card-title mb-0">Dernières filières</h5>
+                <a href="{{ path('admin_filiere_new') }}" class="btn btn-sm btn-primary">+ Nouvelle</a>
+            </div>
+            <table class="table table-hover my-0">
+                <thead><tr><th>#</th><th>Nom</th><th>Établissement</th><th>Niveau requis</th><th>Actions</th></tr></thead>
+                <tbody>
+                {% for filiere in dernieres_filieres %}
+                <tr>
+                    <td>{{ filiere.id }}</td>
+                    <td><strong>{{ filiere.nom }}</strong></td>
+                    <td>{{ filiere.etablissement.nom }}</td>
+                    <td>{{ filiere.niveauRequis }}</td>
+                    <td>
+                        <a href="{{ path('admin_filiere_show', {id: filiere.id}) }}" class="btn btn-sm btn-info">Voir</a>
+                        <a href="{{ path('admin_filiere_edit', {id: filiere.id}) }}" class="btn btn-sm btn-warning">Modifier</a>
+                    </td>
+                </tr>
+                {% else %}
+                <tr><td colspan="5" class="text-center text-muted py-3">Aucune filière. <a href="{{ path('admin_filiere_new') }}">En créer une</a></td></tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="col-12 col-lg-4 d-flex">
+        <div class="card flex-fill w-100">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="card-title mb-0">Derniers utilisateurs</h5>
+                <a href="{{ path('admin_utilisateur_new') }}" class="btn btn-sm btn-primary">+ Nouveau</a>
+            </div>
+            <div class="card-body">
+                {% for u in derniers_utilisateurs %}
+                <div class="d-flex align-items-center mb-3">
+                    <div class="flex-shrink-0">
+                        <div class="avatar bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width:36px;height:36px;font-size:14px;">
+                            {{ u.prenom|first|upper }}{{ u.nom|first|upper }}
+                        </div>
+                    </div>
+                    <div class="flex-grow-1 ms-2">
+                        <p class="mb-0 fw-bold">{{ u.prenom }} {{ u.nom }}</p>
+                        <small class="text-muted">{{ u.email }}</small>
+                    </div>
+                </div>
+                {% else %}
+                <p class="text-muted text-center py-3">Aucun utilisateur.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    var ctx = document.getElementById("chartjs-dashboard-line");
+    if (ctx) {
+        new Chart(ctx, {
+            type: "line",
+            data: {
+                labels: ["Jan","Fév","Mar","Avr","Mai","Juin","Juil","Août","Sep","Oct","Nov","Déc"],
+                datasets: [{
+                    label: "Inscriptions",
+                    fill: true,
+                    backgroundColor: "rgba(59,125,221,0.1)",
+                    borderColor: "#3B7DDD",
+                    data: [5, 12, 8, 20, 15, 30, 25, 40, 35, 50, 45, 60]
+                }]
+            },
+            options: { maintainAspectRatio: false, plugins: { legend: { display: false } } }
+        });
+    }
+});
+</script>
+{% endblock %}

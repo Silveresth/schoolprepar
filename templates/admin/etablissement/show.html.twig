@@ -1,0 +1,42 @@
+{% extends 'admin/base.html.twig' %}
+{% block title %}{{ etablissement.nom }}{% endblock %}
+{% block page_header %}<h1 class="h3 mb-3">Établissement : <strong>{{ etablissement.nom }}</strong></h1>{% endblock %}
+{% block body %}
+<div class="row">
+    <div class="col-md-8">
+        <div class="card"><div class="card-header"><h5 class="card-title mb-0">Informations</h5></div>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-4">Nom</dt><dd class="col-sm-8">{{ etablissement.nom }}</dd>
+                <dt class="col-sm-4">Ville</dt><dd class="col-sm-8">{{ etablissement.ville }}</dd>
+                <dt class="col-sm-4">Adresse</dt><dd class="col-sm-8">{{ etablissement.adresse }}</dd>
+            </dl>
+        </div></div>
+        {% if etablissement.filieres|length > 0 %}
+        <div class="card mt-3"><div class="card-header"><h5 class="card-title mb-0">Filières proposées ({{ etablissement.filieres|length }})</h5></div>
+        <table class="table my-0">
+            <thead><tr><th>Nom</th><th>Niveau requis</th><th></th></tr></thead>
+            <tbody>
+            {% for f in etablissement.filieres %}
+            <tr>
+                <td>{{ f.nom }}</td>
+                <td>{{ f.niveauRequis }}</td>
+                <td><a href="{{ path('admin_filiere_show', {id: f.id}) }}" class="btn btn-sm btn-outline-info">Voir</a></td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table></div>
+        {% endif %}
+    </div>
+    <div class="col-md-4">
+        <div class="card"><div class="card-body d-flex flex-column gap-2">
+            <a href="{{ path('admin_etablissement_edit', {id: etablissement.id}) }}" class="btn btn-warning w-100">Modifier</a>
+            <form method="post" action="{{ path('admin_etablissement_delete', {id: etablissement.id}) }}" onsubmit="return confirm('Supprimer ?')">
+                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ etablissement.id) }}">
+                <button type="submit" class="btn btn-danger w-100">Supprimer</button>
+            </form>
+            <a href="{{ path('admin_etablissement_index') }}" class="btn btn-secondary w-100">Retour</a>
+        </div></div>
+    </div>
+</div>
+{% endblock %}

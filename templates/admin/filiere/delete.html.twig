@@ -1,0 +1,34 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Supprimer {{ filiere.nom ?? 'Filière' }} - SchoolPrepar{% endblock %}
+
+{% block page_header %}
+    <h1 class=\"h3 mb-3\"><strong>Supprimer Filière</strong></h1>
+{% endblock %}
+
+{% block body %}
+<div class=\"row justify-content-center\">
+    <div class=\"col-12 col-lg-8\">
+        <div class=\"card border-danger\">
+            <div class=\"card-header bg-danger text-white\">
+                <h5 class=\"card-title mb-0\">Confirmer suppression</h5>
+            </div>
+            <div class=\"card-body text-center py-5\">
+                <i class=\"fas fa-exclamation-triangle fa-3x text-danger mb-4\"></i>
+                <h4>Êtes-vous sûr de vouloir supprimer la filière ?</h4>
+                <p class=\"text-muted mb-4\">{{ filiere.nom ?? '' }} ne pourra pas être récupérée.</p>
+                
+                <form method=\"post\" action=\"{{ path('admin_filiere_delete', {'id': filiere.id ?? ''}) }}\" style=\"display: inline;\">
+                    <input type=\"hidden\" name=\"_method\" value=\"DELETE\">
+                    <input type=\"hidden\" name=\"_token\" value=\"{{ csrf_token('delete_filiere') }}\">
+                    
+                    <div class=\"d-flex justify-content-center gap-3\">
+                        <a href=\"{{ path('admin_filiere') }}\" class=\"btn btn-secondary\">Annuler</a>
+                        <button type=\"submit\" class=\"btn btn-danger\" onclick=\"return confirm('Confirmer la suppression?')\">Supprimer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
