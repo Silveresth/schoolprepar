@@ -1,0 +1,24 @@
+{% extends 'admin/base.html.twig' %}
+{% block title %}Modifier - {{ evenement.titre }}{% endblock %}
+{% block page_header %}<h1 class="h3 mb-3">Modifier : <strong>{{ evenement.titre }}</strong></h1>{% endblock %}
+{% block body %}
+<div class="card"><div class="card-header"><h5 class="card-title mb-0">Modifier l'événement</h5></div>
+<div class="card-body">
+    {{ form_start(form) }}
+    <div class="row">
+        <div class="col-12 mb-3">{{ form_row(form.titre) }}</div>
+        <div class="col-md-6 mb-3">{{ form_row(form.dateDebut) }}</div>
+        <div class="col-md-6 mb-3">{{ form_row(form.dateFin) }}</div>
+        <div class="col-md-6 mb-3">{{ form_row(form.lieu) }}</div>
+        <div class="col-md-6 mb-3">{{ form_row(form.etablissement) }}</div>
+        <div class="col-12 mb-3">{{ form_row(form.description) }}</div>
+        <div class="col-md-6 mb-3">{{ form_row(form.filieres) }}</div>
+        <div class="col-md-6 mb-3">{{ form_row(form.participants) }}</div>
+    </div>
+    <div class="d-flex gap-2">
+        <button type="submit" class="btn btn-warning">Mettre à jour</button>
+        <a href="{{ path('admin_evenement_index') }}" class="btn btn-secondary">Annuler</a>
+    </div>
+    {{ form_end(form) }}
+</div></div>
+{% endblock %}

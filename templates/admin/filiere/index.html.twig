@@ -1,0 +1,48 @@
+{% extends 'admin/base.html.twig' %}
+{% block title %}Filières - Admin{% endblock %}
+{% block page_header %}
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="h3 mb-0"><strong>Filières</strong></h1>
+        <a href="{{ path('admin_filiere_new') }}" class="btn btn-primary">
+            <i data-feather="plus" class="me-1"></i> Nouvelle filière
+        </a>
+    </div>
+{% endblock %}
+{% block body %}
+{% for type, messages in app.flashes %}
+    {% for message in messages %}
+        <div class="alert alert-{{ type == 'success' ? 'success' : 'danger' }} alert-dismissible fade show" role="alert">
+            {{ message }}<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    {% endfor %}
+{% endfor %}
+<div class="card">
+    <div class="card-header"><h5 class="card-title mb-0">Liste des filières ({{ filieres|length }})</h5></div>
+    <table class="table table-hover my-0">
+        <thead>
+            <tr><th>#</th><th>Nom</th><th>Établissement</th><th>Niveau requis</th><th>Débouchés</th><th>Actions</th></tr>
+        </thead>
+        <tbody>
+        {% for filiere in filieres %}
+        <tr>
+            <td>{{ loop.index }}</td>
+            <td><strong>{{ filiere.nom }}</strong></td>
+            <td>{{ filiere.etablissement.nom }}</td>
+            <td><span class="badge bg-info">{{ filiere.niveauRequis }}</span></td>
+            <td>{{ filiere.debouche|truncate(40, true, '...') }}</td>
+            <td>
+                <a href="{{ path('admin_filiere_show', {id: filiere.id}) }}" class="btn btn-sm btn-outline-info">Voir</a>
+                <a href="{{ path('admin_filiere_edit', {id: filiere.id}) }}" class="btn btn-sm btn-outline-warning">Modifier</a>
+                <form method="post" action="{{ path('admin_filiere_delete', {id: filiere.id}) }}" style="display:inline" onsubmit="return confirm('Supprimer cette filière ?')">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ filiere.id) }}">
+                    <button type="submit" class="btn btn-sm btn-outline-danger">Supprimer</button>
+                </form>
+            </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="6" class="text-center py-4 text-muted">Aucune filière. <a href="{{ path('admin_filiere_new') }}">En créer une</a></td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

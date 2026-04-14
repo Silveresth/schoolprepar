@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Connexion - SchoolPrepar Admin</title>
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body { background: #f5f5f5; }
+        .login-card { max-width: 400px; margin: 100px auto; }
+    </style>
+</head>
+<body>
+<div class="login-card">
+    <div class="text-center mb-4">
+        <h1 class="h3">🎓 SchoolPrepar</h1>
+        <p class="text-muted">Administration</p>
+    </div>
+    <div class="card">
+        <div class="card-header"><h5 class="card-title mb-0">Connexion</h5></div>
+        <div class="card-body">
+            {% if error %}
+                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            {% endif %}
+            <form method="post" action="{{ path('app_login') }}">
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" id="email" name="_username" class="form-control"
+                           value="{{ last_username }}" autocomplete="email" required autofocus>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Mot de passe</label>
+                    <input type="password" id="password" name="_password" class="form-control"
+                           autocomplete="current-password" required>
+                </div>
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                <button type="submit" class="btn btn-primary w-100">Se connecter</button>
+            </form>
+        </div>
+    </div>
+    <div class="text-center mt-3">
+        <a href="{{ path('home') }}" class="text-muted small">← Retour au site</a>
+    </div>
+</div>
+<script src="{{ asset('js/app.js') }}"></script>
+</body>
+</html>
