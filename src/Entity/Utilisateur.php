@@ -40,9 +40,24 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 50)]
     private string $role = 'ROLE_USER';
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $photoFilename = null;
+
+    public function getPhotoFilename(): ?string
+    {
+        return $this->photoFilename;
+    }
+
+    public function setPhotoFilename(?string $photoFilename): static
+    {
+        $this->photoFilename = $photoFilename;
+        return $this;
+    }
+
     // Relation N:N avec Evenement (N utilisateurs participent à N événements)
     #[ORM\ManyToMany(targetEntity: Evenement::class, mappedBy: 'participants')]
     private Collection $evenements;
+
 
     public function __construct()
     {

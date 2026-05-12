@@ -29,7 +29,7 @@
             <td><strong>{{ filiere.nom }}</strong></td>
             <td>{{ filiere.etablissement.nom }}</td>
             <td><span class="badge bg-info">{{ filiere.niveauRequis }}</span></td>
-            <td>{{ filiere.debouche|truncate(40, true, '...') }}</td>
+            <td>{{ filiere.debouche[:40] ~ (filiere.debouche|length > 40 ? '...' : '') }}</td>
             <td>
                 <a href="{{ path('admin_filiere_show', {id: filiere.id}) }}" class="btn btn-sm btn-outline-info">Voir</a>
                 <a href="{{ path('admin_filiere_edit', {id: filiere.id}) }}" class="btn btn-sm btn-outline-warning">Modifier</a>

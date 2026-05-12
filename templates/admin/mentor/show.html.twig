@@ -1,0 +1,57 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Détail Mentor{% endblock %}
+
+{% block content %}
+<div class="container-fluid p-0">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3">🧑‍🏫 {{ mentor.utilisateur.nomComplet }}</h1>
+        <div>
+            <a href="{{ path('admin_mentor_edit', {'id': mentor.id}) }}" class="btn btn-warning">✏️ Modifier</a>
+            <a href="{{ path('admin_mentor_index') }}" class="btn btn-secondary">← Retour</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header"><h5 class="mb-0">Informations</h5></div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-4">Utilisateur</dt>
+                        <dd class="col-sm-8">{{ mentor.utilisateur.nomComplet }}</dd>
+                        <dt class="col-sm-4">Email</dt>
+                        <dd class="col-sm-8">{{ mentor.utilisateur.email }}</dd>
+                        <dt class="col-sm-4">Spécialité</dt>
+                        <dd class="col-sm-8"><span class="badge bg-info text-dark">{{ mentor.specialite }}</span></dd>
+                        <dt class="col-sm-4">Tarif</dt>
+                        <dd class="col-sm-8">{{ mentor.tarif|number_format(0, ',', ' ') }} FCFA/h</dd>
+                        <dt class="col-sm-4">Biographie</dt>
+                        <dd class="col-sm-8">{{ mentor.bio }}</dd>
+                        {% if mentor.experience %}
+                        <dt class="col-sm-4">Expérience</dt>
+                        <dd class="col-sm-8">{{ mentor.experience }}</dd>
+                        {% endif %}
+                    </dl>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header"><h5 class="mb-0">Avis reçus ({{ mentor.avis|length }})</h5></div>
+                <div class="card-body">
+                    {% for avis in mentor.avis %}
+                        <div class="border-bottom pb-2 mb-2">
+                            <strong>{{ avis.auteur.nomComplet }}</strong>
+                            <span class="badge bg-warning text-dark ms-2">{{ avis.note }}/5 ⭐</span>
+                            <p class="text-muted small mb-0">{{ avis.commentaire }}</p>
+                        </div>
+                    {% else %}
+                        <p class="text-muted">Aucun avis pour ce mentor.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

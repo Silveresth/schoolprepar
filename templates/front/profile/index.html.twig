@@ -1,0 +1,180 @@
+{% extends 'front/base.html.twig' %}
+{% block title %}Mon profil — SchoolPrepar{% endblock %}
+
+{% block body %}
+<section class="mk-hero" style="min-height:30vh;padding:6rem 0 2.5rem;">
+    <div class="container">
+        <div class="mk-hero-content">
+            <h1>👤 Mon profil</h1>
+            <p>{{ user.email }}</p>
+        </div>
+    </div>
+</section>
+
+<section class="mk-section" style="background:#f8f9fa;">
+    <div class="container">
+        <div class="row g-4 justify-content-center">
+
+            {# Carte profil principale #}
+            <div class="col-md-4">
+                <div class="mk-card card mb-4">
+                    <div class="card-body p-4 text-center">
+                        {% set avatar = user.photoFilename %}
+                        <div class="mx-auto mb-3" style="width:90px;height:90px;border-radius:50%;background:linear-gradient(195deg,#49a3f1,#1A73E8);overflow:hidden;display:flex;align-items:center;justify-content:center;">
+                            <img src="{{ avatar ? asset('img/avatars/' ~ avatar) : '' }}"
+                                 alt="Avatar"
+                                 style="width:100%;height:100%;object-fit:cover;"
+                                 onerror="this.style.display='none';this.parentNode.innerHTML='<span style=\'font-size:2.5rem;color:#fff;\'>👤</span>';"
+                                 {% if not avatar %}style="display:none;"{% endif %} />
+                            {% if not avatar %}<span style="font-size:2.5rem;color:#fff;">👤</span>{% endif %}
+                        </div>
+                        <h4 class="fw-bold mb-1">{{ user.nomComplet }}</h4>
+                        <span class="mk-badge-pill">
+                            {% if is_granted('ROLE_ADMIN') %}🔧 Administrateur
+                            {% elseif is_granted('ROLE_CONSEILLER') or is_granted('ROLE_MENTOR') %}🎓 Conseiller / Mentor
+                            {% else %}📚 Étudiant
+                            {% endif %}
+                        </span>
+                        <hr>
+                        <dl class="text-start small mb-0">
+                            <dt class="text-muted">Prénom</dt>
+                            <dd>{{ user.prenom }}</dd>
+                            <dt class="text-muted">Nom</dt>
+                            <dd>{{ user.nom }}</dd>
+                            <dt class="text-muted">Email</dt>
+                            <dd>{{ user.email }}</dd>
+                        </dl>
+                    </div>
+                    <div class="card-footer bg-transparent d-flex flex-column gap-2">
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <a href="{{ path('admin_dashboard') }}" class="btn btn-primary btn-sm w-100">🔧 Panel Admin</a>
+                        {% elseif is_granted('ROLE_CONSEILLER') or is_granted('ROLE_MENTOR') %}
+                            <a href="{{ path('mentor_dashboard') }}" class="btn btn-primary btn-sm w-100">📊 Mon tableau de bord</a>
+                        {% else %}
+                            <a href="{{ path('student_dashboard') }}" class="btn btn-primary btn-sm w-100">📊 Mon tableau de bord</a>
+                        {% endif %}
+                        <a href="{{ path('front_chat_index') }}" class="btn btn-outline-secondary btn-sm w-100">💬 Messagerie</a>
+                        <a href="{{ path('app_logout') }}" class="btn btn-outline-danger btn-sm w-100">🚪 Déconnexion</a>
+                    </div>
+                </div>
+
+                {# Fiche mentor si conseiller #}
+                {% if mentorProfile %}
+                <div class="mk-card card">
+                    <div class="card-header"><h6 class="mb-0">🧑‍🏫 Mon profil conseiller</h6></div>
+                    <div class="card-body p-3 small">
+                        <div class="mb-1"><strong>Spécialité :</strong> {{ mentorProfile.specialite }}</div>
+                        <div class="mb-1"><strong>Tarif :</strong> {{ mentorProfile.tarif|number_format(0,',',' ') }} FCFA/h</div>
+                        <div class="mb-1"><strong>Avis reçus :</strong> {{ mentorProfile.avis|length }}</div>
+                        <div class="mb-2"><strong>RDV :</strong> {{ mentorProfile.rendezVous|length }}</div>
+                        <a href="{{ path('front_mentor_show', {'id': mentorProfile.id}) }}"
+                           class="btn btn-sm btn-outline-success w-100">Voir mon profil public</a>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
+            {# Colonne droite : activité #}
+            <div class="col-md-8">
+
+                {# Messages reçus #}
+                {% if messagesRecus|length > 0 %}
+                <div class="mk-card card mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h6 class="mb-0">✉️ Derniers messages reçus</h6>
+                        <a href="{{ path('front_chat_index') }}" class="btn btn-sm btn-outline-primary">Voir tout</a>
+                    </div>
+                    <div class="card-body p-0">
+                        <ul class="list-group list-group-flush">
+                            {% for msg in messagesRecus %}
+                            <li class="list-group-item d-flex align-items-start gap-3 py-3">
+                                <span class="fs-5 mt-1">✉️</span>
+                                <div class="flex-fill" style="min-width:0;">
+                                    <div class="fw-semibold small">De : {{ msg.expediteur.nomComplet }}</div>
+                                    <div class="text-muted small" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                                        {{ msg.contenu|slice(0, 80) }}…
+                                    </div>
+                                </div>
+                                <a href="{{ path('front_chat_conversation', {'id': msg.expediteur.id}) }}"
+                                   class="btn btn-sm btn-outline-primary" style="white-space:nowrap;">Répondre</a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                {% endif %}
+
+                {# Mes rendez-vous (étudiant uniquement) #}
+                {% if mesRdv|length > 0 %}
+                <div class="mk-card card mb-4">
+                    <div class="card-header"><h6 class="mb-0">📅 Mes rendez-vous</h6></div>
+                    <div class="card-body p-0">
+                        <ul class="list-group list-group-flush">
+                            {% for rdv in mesRdv %}
+                            <li class="list-group-item d-flex align-items-center gap-3 py-3">
+                                <div class="text-center" style="min-width:44px;">
+                                    <div class="fw-bold text-primary" style="font-size:1.2rem;">{{ rdv.date|date('d') }}</div>
+                                    <div class="text-muted small text-uppercase">{{ rdv.date|date('M') }}</div>
+                                </div>
+                                <div class="flex-fill">
+                                    <div class="fw-semibold small">
+                                        Avec {{ rdv.idMentor.utilisateur.nomComplet }}
+                                    </div>
+                                    <div class="text-muted small">{{ rdv.date|date('H:i') }}</div>
+                                </div>
+                                <span class="badge bg-{{ rdv.statut == 'confirme' ? 'success' : (rdv.statut == 'annule' ? 'danger' : 'warning') }}">
+                                    {{ rdv.statut|replace({'_': ' '})|capitalize }}
+                                </span>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                {% endif %}
+
+                {# Accès rapides #}
+                <div class="mk-card card">
+                    <div class="card-header"><h6 class="mb-0">⚡ Accès rapides</h6></div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-6">
+                                <a href="{{ path('front_mentor_index') }}" class="text-decoration-none">
+                                    <div class="border rounded-3 p-3 text-center h-100">
+                                        <div class="fs-3">🧑‍🏫</div>
+                                        <div class="small fw-semibold mt-1">Mentors</div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-6">
+                                <a href="{{ path('front_evenement_index') }}" class="text-decoration-none">
+                                    <div class="border rounded-3 p-3 text-center h-100">
+                                        <div class="fs-3">📅</div>
+                                        <div class="small fw-semibold mt-1">Événements</div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-6">
+                                <a href="{{ path('front_forum_index') }}" class="text-decoration-none">
+                                    <div class="border rounded-3 p-3 text-center h-100">
+                                        <div class="fs-3">💬</div>
+                                        <div class="small fw-semibold mt-1">Forum</div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-6">
+                                <a href="{{ path('front_quiz_index') }}" class="text-decoration-none">
+                                    <div class="border rounded-3 p-3 text-center h-100">
+                                        <div class="fs-3">📋</div>
+                                        <div class="small fw-semibold mt-1">Quiz</div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

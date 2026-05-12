@@ -14,7 +14,9 @@
             <div class="col-md-6 mb-3">{{ form_row(form.niveau_requis) }}</div>
             <div class="col-md-6 mb-3">{{ form_row(form.debouche) }}</div>
             <div class="col-12 mb-3">{{ form_row(form.description) }}</div>
+            <div class="col-12 mb-3">{{ form_row(form.imageFile) }}</div>
         </div>
+
         <div class="d-flex gap-2">
             <button type="submit" class="btn btn-primary">Enregistrer</button>
             <a href="{{ path('admin_filiere_index') }}" class="btn btn-secondary">Annuler</a>

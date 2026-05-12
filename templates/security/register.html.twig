@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Inscription — SchoolPrepar</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #f0f2f5; min-height: 100vh; display: flex; align-items: center; padding: 2rem 0; }
+        .register-wrap { max-width: 560px; width: 100%; margin: 0 auto; padding: 0 1rem; }
+        .brand { text-align: center; margin-bottom: 1.5rem; }
+        .brand .logo { font-size: 1.6rem; font-weight: 800; color: #1A73E8; text-decoration: none; }
+        .brand .logo span { color: #344767; }
+        .card { border: none; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,.1); }
+        .card-header { background: linear-gradient(135deg, #1A73E8 0%, #0d47a1 100%); border-radius: 20px 20px 0 0 !important; padding: 1.5rem 2rem; }
+        .card-body { padding: 2rem; }
+        .form-control, .form-select {
+            border: 1.5px solid #e2e8f0; border-radius: 10px; padding: .7rem 1rem;
+            font-size: .9rem; transition: border-color .2s;
+        }
+        .form-control:focus, .form-select:focus { border-color: #1A73E8; box-shadow: 0 0 0 3px rgba(26,115,232,.1); }
+        .form-label { font-size: .85rem; font-weight: 600; color: #4a5568; margin-bottom: .4rem; }
+
+        /* Role selector */
+        .role-option { display: none; }
+        .role-label {
+            display: flex; align-items: center; gap: 1rem; padding: .9rem 1rem;
+            border: 2px solid #e2e8f0; border-radius: 12px; cursor: pointer;
+            transition: all .15s; background: #fff; margin-bottom: .6rem;
+        }
+        .role-label:hover { border-color: #1A73E8; background: #f0f7ff; }
+        .role-option:checked + .role-label {
+            border-color: #1A73E8; background: #e8f0fe;
+            box-shadow: 0 2px 8px rgba(26,115,232,.15);
+        }
+        .role-icon { font-size: 1.5rem; flex-shrink: 0; }
+        .role-title { font-weight: 600; font-size: .9rem; color: #1a202c; }
+        .role-desc { font-size: .78rem; color: #718096; }
+
+        /* Specialite field - hidden by default */
+        #specialite-wrap { display: none; }
+        #specialite-wrap.visible { display: block; }
+
+        .btn-register { background: linear-gradient(135deg, #1A73E8, #0d47a1); border: none; border-radius: 10px; padding: .85rem; font-weight: 600; font-size: 1rem; }
+        .btn-register:hover { opacity: .9; transform: translateY(-1px); }
+    </style>
+</head>
+<body>
+<div class="container">
+<div class="register-wrap">
+    <div class="brand">
+        <a href="{{ path('home') }}" class="logo">🎓 School<span>Prepar</span></a>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h4 class="text-white mb-0 fw-bold">Créer votre compte</h4>
+            <p class="text-white mb-0 mt-1" style="opacity:.8;font-size:.9rem;">Rejoignez notre communauté d'orientation</p>
+        </div>
+        <div class="card-body">
+            {{ form_start(registrationForm, {'attr': {'novalidate': 'novalidate', 'id': 'registerForm'}}) }}
+
+            {# Role selector #}
+            <div class="mb-4">
+                <label class="form-label mb-2">Je suis…</label>
+                {% for child in registrationForm.role %}
+                    {{ form_widget(child, {'attr': {'class': 'role-option', 'id': child.vars.id}}) }}
+                    <label class="role-label" for="{{ child.vars.id }}">
+                        <span class="role-icon">{{ loop.index == 1 ? '📚' : '🧑‍🏫' }}</span>
+                        <div>
+                            <div class="role-title">{{ loop.index == 1 ? 'Étudiant(e)' : 'Conseiller / Mentor' }}</div>
+                            <div class="role-desc">{{ loop.index == 1 ? 'Je cherche une orientation scolaire ou professionnelle' : "J'accompagne et guide des étudiants dans leur parcours" }}</div>
+                        </div>
+                    </label>
+                {% endfor %}
+                {{ form_errors(registrationForm.role) }}
+            </div>
+
+            {# Specialite - shown only for conseiller #}
+            <div id="specialite-wrap" class="mb-3">
+                <label class="form-label">Votre spécialité <span class="text-muted fw-normal">(modifiable plus tard)</span></label>
+                {{ form_widget(registrationForm.specialite, {'attr': {'class': 'form-control', 'placeholder': 'Ex : Informatique, Médecine, Droit, Commerce…'}}) }}
+            </div>
+
+            <div class="row g-3 mb-3">
+                <div class="col-6">
+                    <label class="form-label">Prénom</label>
+                    {{ form_widget(registrationForm.prenom, {'attr': {'class': 'form-control', 'placeholder': 'Votre prénom'}}) }}
+                    {{ form_errors(registrationForm.prenom) }}
+                </div>
+                <div class="col-6">
+                    <label class="form-label">Nom</label>
+                    {{ form_widget(registrationForm.nom, {'attr': {'class': 'form-control', 'placeholder': 'Votre nom'}}) }}
+                    {{ form_errors(registrationForm.nom) }}
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Email</label>
+                {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control', 'placeholder': 'exemple@email.com'}}) }}
+                {{ form_errors(registrationForm.email) }}
+            </div>
+
+            <div class="row g-3 mb-4">
+                <div class="col-6">
+                    <label class="form-label">Mot de passe</label>
+                    {{ form_widget(registrationForm.plainPassword.first, {'attr': {'class': 'form-control', 'placeholder': 'Min. 6 caractères'}}) }}
+                </div>
+                <div class="col-6">
+                    <label class="form-label">Confirmer</label>
+                    {{ form_widget(registrationForm.plainPassword.second, {'attr': {'class': 'form-control', 'placeholder': 'Répéter…'}}) }}
+                </div>
+                {{ form_errors(registrationForm.plainPassword) }}
+            </div>
+
+            <button type="submit" class="btn btn-register btn-primary w-100 text-white">
+                Créer mon compte <i class="fas fa-arrow-right ms-2"></i>
+            </button>
+
+            {{ form_end(registrationForm) }}
+        </div>
+        <div class="card-footer bg-transparent text-center py-3 border-0">
+            <span class="text-muted" style="font-size:.9rem;">Déjà un compte ?</span>
+            <a href="{{ path('app_login') }}" style="color:#1A73E8;font-weight:600;text-decoration:none;"> Se connecter</a>
+            &nbsp;·&nbsp;
+            <a href="{{ path('home') }}" style="color:#718096;font-size:.85rem;text-decoration:none;">← Retour au site</a>
+        </div>
+    </div>
+</div>
+</div>
+
+<script>
+// Show specialite field only when conseiller is selected
+document.querySelectorAll('.role-option').forEach(function(radio) {
+    radio.addEventListener('change', function() {
+        const wrap = document.getElementById('specialite-wrap');
+        if (this.value === 'ROLE_CONSEILLER') {
+            wrap.classList.add('visible');
+        } else {
+            wrap.classList.remove('visible');
+        }
+    });
+});
+</script>
+</body>
+</html>

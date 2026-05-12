@@ -1,0 +1,64 @@
+{% extends 'front/base.html.twig' %}
+{% block title %}Mon profil conseiller — SchoolPrepar{% endblock %}
+
+{% block body %}
+<section class="mk-hero" style="min-height:26vh;padding:5.5rem 0 2rem;">
+    <div class="container">
+        <div class="mk-hero-content">
+            <h1>🧑‍🏫 Mon profil conseiller</h1>
+            <p>Complétez votre profil pour que les étudiants puissent vous trouver.</p>
+        </div>
+    </div>
+</section>
+
+<section class="mk-section" style="background:#f8f9fa;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-7">
+                <div class="card border-0 shadow-sm" style="border-radius:16px;">
+                    <div class="card-body p-4">
+                        <h5 class="fw-bold mb-4">Informations de conseiller</h5>
+                        {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold" style="font-size:.85rem;">Spécialité</label>
+                            {{ form_widget(form.specialite, {'attr': {'class': 'form-control', 'style': 'border-radius:10px;'}}) }}
+                            {{ form_errors(form.specialite) }}
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold" style="font-size:.85rem;">Biographie</label>
+                            {{ form_widget(form.bio, {'attr': {'class': 'form-control', 'style': 'border-radius:10px;', 'rows': 5}}) }}
+                            {{ form_errors(form.bio) }}
+                            <div class="text-muted" style="font-size:.75rem;">Minimum 50 caractères. Décrivez votre parcours, vos compétences, ce que vous pouvez apporter aux étudiants.</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold" style="font-size:.85rem;">Expérience professionnelle <span class="text-muted fw-normal">(optionnel)</span></label>
+                            {{ form_widget(form.experience, {'attr': {'class': 'form-control', 'style': 'border-radius:10px;', 'rows': 3}}) }}
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold" style="font-size:.85rem;">Tarif horaire (FCFA)</label>
+                            {{ form_widget(form.tarif, {'attr': {'class': 'form-control', 'style': 'border-radius:10px;'}}) }}
+                            {{ form_errors(form.tarif) }}
+                            <div class="text-muted" style="font-size:.75rem;">Mettez 0 si vous offrez vos services gratuitement.</div>
+                        </div>
+
+                        <div class="d-flex gap-3">
+                            <button type="submit" class="btn btn-primary flex-fill" style="border-radius:10px;">
+                                💾 Enregistrer le profil
+                            </button>
+                            <a href="{{ path('front_mentor_show', {'id': mentor.id}) }}" class="btn btn-outline-secondary" style="border-radius:10px;">
+                                Voir mon profil
+                            </a>
+                        </div>
+
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

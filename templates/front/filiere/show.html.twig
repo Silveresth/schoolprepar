@@ -1,0 +1,96 @@
+{% extends 'front/base.html.twig' %}
+
+{% block title %}{{ filiere.nom }} — SchoolPrepar{% endblock %}
+
+{% block body %}
+<section class="mk-hero" style="min-height:35vh;padding:7rem 0 3rem;">
+    <div class="container">
+        <div class="mk-hero-content">
+            <span class="mk-badge-pill mb-2 d-inline-block" style="background:rgba(255,255,255,.2);color:#fff;">
+                <i class="fas fa-book me-2"></i>Filière
+            </span>
+            <h1>{{ filiere.nom }}</h1>
+            <p>{{ filiere.etablissement.nom }} — Niveau requis : {{ filiere.niveauRequis }}</p>
+        </div>
+    </div>
+</section>
+
+<section class="mk-section" style="background:#f8f9fa;">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-4">
+                <div class="mk-card card mb-4">
+                    <div class="card-body p-4">
+                        {% set img = filiere.imageFilename %}
+                        <div class="text-center mb-3">
+                            <div style="width:140px;height:140px;border-radius:50%;margin:0 auto;overflow:hidden;background:#fff;">
+                                <img
+                                    src="{{ img ? asset('img/photos/' ~ img) : asset('img/photos/unsplash-2.jpg') }}"
+                                    alt="Image filière"
+                                    style="width:100%;height:100%;object-fit:cover;"
+                                />
+                            </div>
+                        </div>
+                        <ul class="list-unstyled small text-muted mb-0">
+                            <li class="mb-2"><i class="fas fa-university me-2 text-primary"></i>{{ filiere.etablissement.nom }}</li>
+                            <li class="mb-2"><i class="fas fa-layer-group me-2 text-success"></i>Niveau : {{ filiere.niveauRequis }}</li>
+                        </ul>
+                        <hr>
+                        <div class="text-center">
+                            <a href="#contact" class="mk-btn-primary" style="display:inline-flex;align-items:center;gap:8px;">
+                                <i class="fas fa-paper-plane"></i> Contacter
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-8">
+                <div class="mk-card card mb-4">
+                    <div class="card-header"><h5 class="mb-0">Description</h5></div>
+                    <div class="card-body p-4">
+                        <p class="text-muted" style="line-height:1.8;">{{ filiere.description }}</p>
+                        <hr>
+                        <h6 class="fw-bold">Débouchés</h6>
+                        <p class="text-muted mb-0">{{ filiere.debouche }}</p>
+                    </div>
+                </div>
+
+                <div class="mk-card card mb-4">
+                    <div class="card-header"><h5 class="mb-0">Événements liés à cette filière</h5></div>
+                    <div class="card-body p-4">
+                        {% if evenements|length > 0 %}
+                            <div class="row g-3">
+                                {% for evenement in evenements %}
+                                    <div class="col-md-6">
+                                        <div class="border rounded-3 p-3 h-100 bg-white">
+                                            <div class="fw-bold">{{ evenement.titre }}</div>
+                                            <div class="text-muted small">{{ evenement.dateDebut|date('d/m/Y H:i') }} — {{ evenement.lieu }}</div>
+                                            <a href="{{ path('front_evenement_show', {'id': evenement.id}) }}" class="btn btn-sm btn-outline-primary mt-2">Voir</a>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <p class="text-muted mb-0">Aucun événement pour le moment.</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div id="contact" class="mk-card card">
+                    <div class="card-header"><h5 class="mb-0">Contact</h5></div>
+                    <div class="card-body p-4">
+                        <p class="text-muted">Chat (à connecter) — bouton « Détails » fonctionne déjà.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="mt-3">
+            <a href="{{ path('filiere') }}" class="text-muted small">← Retour aux filières</a>
+        </div>
+    </div>
+</section>
+{% endblock %}
+

@@ -10,6 +10,7 @@
 
     {# CSS AdminKit - chemin depuis public/ #}
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
     <script src="{{ asset('js/app.js') }}"></script>        
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 
@@ -36,7 +37,9 @@
                     {% block page_header %}{% endblock %}
 
                     {# Contenu principal #}
-                    {% block body %}{% endblock %}
+                    {% block body %}
+                    {% block content %}{% endblock %}
+                    {% endblock %}
 
                 </div>
             </main>

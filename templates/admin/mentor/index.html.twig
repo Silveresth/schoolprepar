@@ -1,0 +1,63 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Mentors{% endblock %}
+
+{% block content %}
+<div class="container-fluid p-0">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3">🧑‍🏫 Gestion des Mentors</h1>
+        <a href="{{ path('admin_mentor_new') }}" class="btn btn-primary">➕ Nouveau Mentor</a>
+    </div>
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    {% endfor %}
+
+    <div class="card">
+        <div class="card-body p-0">
+            <table class="table table-hover mb-0">
+                <thead class="table-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>Nom complet</th>
+                        <th>Spécialité</th>
+                        <th>Tarif (FCFA/h)</th>
+                        <th>Avis</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for mentor in mentors %}
+                    <tr>
+                        <td>{{ mentor.id }}</td>
+                        <td>
+                            <strong>{{ mentor.utilisateur.nomComplet }}</strong><br>
+                            <small class="text-muted">{{ mentor.utilisateur.email }}</small>
+                        </td>
+                        <td><span class="badge bg-info text-dark">{{ mentor.specialite }}</span></td>
+                        <td>{{ mentor.tarif|number_format(0, ',', ' ') }} FCFA</td>
+                        <td>{{ mentor.avis|length }} avis</td>
+                        <td class="text-center">
+                            <a href="{{ path('admin_mentor_show', {'id': mentor.id}) }}" class="btn btn-sm btn-info">👁️</a>
+                            <a href="{{ path('admin_mentor_edit', {'id': mentor.id}) }}" class="btn btn-sm btn-warning">✏️</a>
+                            <form method="post" action="{{ path('admin_mentor_delete', {'id': mentor.id}) }}" class="d-inline"
+                                  onsubmit="return confirm('Supprimer ce mentor ?')">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ mentor.id) }}">
+                                <button type="submit" class="btn btn-sm btn-danger">🗑️</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="6" class="text-center text-muted py-4">Aucun mentor enregistré.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends 'front/base.html.twig' %}
+{% block title %}Nouveau sujet — Forum SchoolPrepar{% endblock %}
+
+{% block body %}
+<section class="mk-hero" style="min-height:28vh;padding:6rem 0 2.5rem;">
+    <div class="container">
+        <div class="mk-hero-content">
+            <span class="mk-badge-pill mb-2 d-inline-block" style="background:rgba(255,255,255,.2);color:#fff;">
+                <i class="fas fa-plus me-2"></i>Nouveau sujet
+            </span>
+            <h1>Créer un sujet</h1>
+            <p>Choisissez une filière, écrivez votre titre et votre message.</p>
+        </div>
+    </div>
+</section>
+
+<section class="mk-section" style="background:#f8f9fa;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="mk-card card">
+                    <div class="card-header d-flex align-items-center gap-2">
+                        <span class="fs-5">💬</span>
+                        <h5 class="mb-0">Nouveau sujet de discussion</h5>
+                    </div>
+                    <div class="card-body p-4">
+                        {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+                        <div class="mb-3">
+                            {{ form_label(form.filiere, null, {'label_attr': {'class': 'form-label fw-semibold'}}) }}
+                            {{ form_widget(form.filiere) }}
+                            {{ form_errors(form.filiere) }}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form_label(form.titre, null, {'label_attr': {'class': 'form-label fw-semibold'}}) }}
+                            {{ form_widget(form.titre) }}
+                            {{ form_errors(form.titre) }}
+                        </div>
+
+                        <div class="mb-4">
+                            {{ form_label(form.contenu, null, {'label_attr': {'class': 'form-label fw-semibold'}}) }}
+                            {{ form_widget(form.contenu) }}
+                            {{ form_errors(form.contenu) }}
+                        </div>
+
+                        <div class="d-flex gap-3 align-items-center">
+                            <button type="submit" class="mk-btn-primary" style="padding:10px 22px; border:none;">
+                                📢 Publier le sujet
+                            </button>
+                            <a href="{{ path('front_forum_index') }}" class="text-muted small">Annuler</a>
+                        </div>
+
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

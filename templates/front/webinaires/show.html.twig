@@ -1,0 +1,42 @@
+{% extends 'front/base.html.twig' %}
+{% block title %}{{ evenement.titre }} — Webinaire{% endblock %}
+
+{% block body %}
+<section class="mk-hero" style="min-height:30vh;padding:7rem 0 3rem;">
+    <div class="container">
+        <div class="mk-hero-content">
+            <span class="mk-badge-pill mb-2 d-inline-block" style="background:rgba(255,255,255,.2);color:#fff;">
+                <i class="fas fa-video me-2"></i>Webinaire
+            </span>
+            <h1>{{ evenement.titre }}</h1>
+            <p class="text-white" style="opacity:.85;">{{ evenement.dateDebut|date('d/m/Y H:i') }} — {{ evenement.lieu }}</p>
+        </div>
+    </div>
+</section>
+
+<section class="mk-section" style="background:#f8f9fa;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="mk-card card">
+                    <div class="card-header"><h5 class="mb-0">Description</h5></div>
+                    <div class="card-body p-4">
+                        <p class="text-muted" style="line-height:1.8;">{{ evenement.description }}</p>
+
+                        <div class="alert alert-info mt-4">
+                            <strong>Replay</strong>
+                            <div class="small text-muted">À connecter à un stockage vidéo (non présent dans le modèle actuel).</div>
+                        </div>
+
+                        <div class="d-flex gap-2 flex-wrap">
+                            <a href="{{ path('front_webinaires_index') }}" class="btn btn-outline-secondary">← Retour</a>
+                            <a href="{{ path('front_evenement_show', {'id': evenement.id}) }}" class="btn btn-primary">Voir l’événement</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+

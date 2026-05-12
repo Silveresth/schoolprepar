@@ -1,0 +1,26 @@
+{% extends 'admin/base.html.twig' %}
+{% block title %}Détail Réponse{% endblock %}
+{% block content %}
+<div class="container-fluid p-0">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3">💬 Détail Réponse #{{ item.id }}</h1>
+        <div>
+            <a href="{{ path('admin_reponse_edit', {'id': item.id}) }}" class="btn btn-warning">✏️ Modifier</a>
+            <a href="{{ path('admin_reponse_index') }}" class="btn btn-secondary">← Retour</a>
+        </div>
+    </div>
+    <div class="card"><div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Question</dt>
+            <dd class="col-sm-9">{{ item.question.contenu }}</dd>
+            <dt class="col-sm-3">Réponse</dt>
+            <dd class="col-sm-9">{{ item.contenu }}</dd>
+        </dl>
+        <hr>
+        <form method="post" action="{{ path('admin_reponse_delete', {'id': item.id}) }}" onsubmit="return confirm('Supprimer ?')">
+            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ item.id) }}">
+            <button type="submit" class="btn btn-danger btn-sm">🗑️ Supprimer</button>
+        </form>
+    </div></div>
+</div>
+{% endblock %}

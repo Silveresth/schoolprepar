@@ -1,0 +1,73 @@
+{% extends 'front/base.html.twig' %}
+{% block title %}{{ evenement.titre }} — SchoolPrepar{% endblock %}
+
+{% block body %}
+<section class="mk-hero" style="min-height:35vh;padding:7rem 0 3rem;">
+    <div class="container">
+        <div class="mk-hero-content">
+            <span class="mk-badge-pill mb-2 d-inline-block" style="background:rgba(255,255,255,.2);color:#fff;">📅 Événement</span>
+            <h1>{{ evenement.titre }}</h1>
+            <p>{{ evenement.dateDebut|date('d/m/Y H:i') }} — {{ evenement.lieu }}</p>
+        </div>
+    </div>
+</section>
+
+<section class="mk-section" style="background:#f8f9fa;">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-8">
+                <div class="mk-card card mb-4">
+                    <div class="card-body p-4">
+                        <h5 class="fw-bold mb-3">À propos de cet événement</h5>
+                        <p class="text-muted" style="line-height:1.8;">{{ evenement.description }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="mk-card card mb-3">
+                    <div class="card-body p-4">
+                        <h6 class="fw-bold mb-3">Informations pratiques</h6>
+                        <ul class="list-unstyled small text-muted">
+                            <li class="mb-2"><i class="fas fa-calendar-alt me-2 text-primary"></i>Début : {{ evenement.dateDebut|date('d/m/Y à H:i') }}</li>
+                            <li class="mb-2"><i class="fas fa-calendar-check me-2 text-success"></i>Fin : {{ evenement.dateFin|date('d/m/Y à H:i') }}</li>
+                            <li class="mb-2"><i class="fas fa-map-marker-alt me-2 text-danger"></i>{{ evenement.lieu }}</li>
+                            {% if evenement.etablissement %}
+                            <li class="mb-2"><i class="fas fa-university me-2 text-info"></i>{{ evenement.etablissement.nom }}</li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+
+                {# Bouton inscription #}
+                {% if app.user %}
+                    {% if dejainscrit %}
+                        <div class="alert alert-success text-center"><i class="fas fa-check-circle me-2"></i>Vous êtes inscrit(e)</div>
+                    {% else %}
+                        <div class="mk-card card">
+                            <div class="card-body p-4 text-center">
+                                <p class="text-muted small mb-3">Rejoignez cet événement !</p>
+                                <form method="post" action="{{ path('front_evenement_inscription', {'id': evenement.id}) }}">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('inscription' ~ evenement.id) }}">
+                                    <button type="submit" class="mk-btn-primary w-100" style="justify-content:center;">
+                                        <i class="fas fa-user-plus me-2"></i> M'inscrire
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% else %}
+                    <div class="mk-card card">
+                        <div class="card-body p-4 text-center">
+                            <p class="text-muted small mb-3">Connectez-vous pour vous inscrire.</p>
+                            <a href="{{ path('app_login') }}" class="mk-btn-primary" style="justify-content:center;">
+                                <i class="fas fa-sign-in-alt me-1"></i> Se connecter
+                            </a>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        <a href="{{ path('front_evenement_index') }}" class="text-muted small">← Retour aux événements</a>
+    </div>
+</section>
+{% endblock %}

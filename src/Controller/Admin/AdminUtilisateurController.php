@@ -11,8 +11,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/admin/utilisateur')]
+#[IsGranted('ROLE_ADMIN')]
 class AdminUtilisateurController extends AbstractController
 {
     #[Route('/', name: 'admin_utilisateur_index', methods: ['GET'])]
@@ -35,7 +37,24 @@ class AdminUtilisateurController extends AbstractController
             if ($plainPassword) {
                 $utilisateur->setPassword($hasher->hashPassword($utilisateur, $plainPassword));
             }
+
+            $photoFile = $form->get('photoFile')->getData();
+            if ($photoFile) {
+                $uploadsDir = $this->getParameter('kernel.project_dir') . '/public/img/avatars';
+                if (!is_dir($uploadsDir)) {
+                    mkdir($uploadsDir, 0775, true);
+                }
+
+                $originalExtension = $photoFile->guessExtension() ?: $photoFile->getClientOriginalExtension();
+                $safeExtension = $originalExtension ? strtolower($originalExtension) : 'jpg';
+                $newFilename = uniqid('avatar_', true) . '.' . $safeExtension;
+
+                $photoFile->move($uploadsDir, $newFilename);
+                $utilisateur->setPhotoFilename($newFilename);
+            }
+
             $em->persist($utilisateur);
+
             $em->flush();
             $this->addFlash('success', 'Utilisateur créé avec succès.');
             return $this->redirectToRoute('admin_utilisateur_index');
@@ -64,7 +83,24 @@ class AdminUtilisateurController extends AbstractController
             if ($plainPassword) {
                 $utilisateur->setPassword($hasher->hashPassword($utilisateur, $plainPassword));
             }
+
+            $photoFile = $form->get('photoFile')->getData();
+            if ($photoFile) {
+                $uploadsDir = $this->getParameter('kernel.project_dir') . '/public/img/avatars';
+                if (!is_dir($uploadsDir)) {
+                    mkdir($uploadsDir, 0775, true);
+                }
+
+                $originalExtension = $photoFile->guessExtension() ?: $photoFile->getClientOriginalExtension();
+                $safeExtension = $originalExtension ? strtolower($originalExtension) : 'jpg';
+                $newFilename = uniqid('avatar_', true) . '.' . $safeExtension;
+
+                $photoFile->move($uploadsDir, $newFilename);
+                $utilisateur->setPhotoFilename($newFilename);
+            }
+
             $em->flush();
+
             $this->addFlash('success', 'Utilisateur modifié.');
             return $this->redirectToRoute('admin_utilisateur_index');
         }

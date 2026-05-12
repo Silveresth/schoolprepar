@@ -1,77 +1,55 @@
 {% extends 'front/base.html.twig' %}
-{% block title %}Établissements - SchoolPrepar{% endblock %}
+{% block title %}Établissements — SchoolPrepar{% endblock %}
 
 {% block body %}
-
-<div style="background:linear-gradient(195deg,#42424a,#191919);padding:7rem 0 4rem;color:#fff;">
+<section class="mk-hero" style="min-height:40vh;padding:7rem 0 3rem;">
     <div class="container">
-        <p class="text-uppercase fw-bold small mb-2" style="color:#49a3f1;letter-spacing:2px;">Découvrir</p>
-        <h1 class="fw-bold mb-3" style="font-size:2.5rem;">Nos établissements</h1>
-        <p style="opacity:.8;">Explorez les établissements partenaires et leurs filières proposées.</p>
-    </div>
-</div>
-
-<section class="mk-section" style="background:#f8f9fa;">
-    <div class="container">
-
-        {% if etablissements is empty %}
-        <div class="text-center py-5">
-            <i class="fas fa-university fa-3x text-muted mb-3"></i>
-            <p class="text-muted">Aucun établissement disponible pour le moment.</p>
-            <a href="{{ path('home') }}" class="mk-btn-primary">Retour à l'accueil</a>
+        <div class="mk-hero-content">
+            <h1>🏫 Établissements partenaires</h1>
+            <p>Découvrez les établissements disponibles au Togo</p>
         </div>
-        {% else %}
-        <div class="row mb-4">
-            <div class="col">
-                <h5 class="fw-bold mb-0" style="color:#344767;">{{ etablissements|length }} établissement{{ etablissements|length > 1 ? 's' : '' }}</h5>
-            </div>
-        </div>
-
-        <div class="row g-4">
-            {% for etab in etablissements %}
-            <div class="col-md-6 col-lg-4">
-                <div class="mk-card card h-100">
-                    <div class="card-body p-4">
-                        <div class="d-flex align-items-start gap-3 mb-3">
-                            <div class="mk-card-icon bg-gradient-success mb-0 flex-shrink-0" style="width:48px;height:48px;">
-                                <i class="fas fa-university" style="font-size:1.1rem;"></i>
-                            </div>
-                            <div>
-                                <h6 class="fw-bold mb-1" style="color:#344767;">{{ etab.nom }}</h6>
-                                <small class="text-muted">
-                                    <i class="fas fa-map-marker-alt me-1" style="color:#43A047;"></i>
-                                    {{ etab.ville }}
-                                </small>
-                            </div>
-                        </div>
-                        <p class="text-muted small mb-3">
-                            <i class="fas fa-map-signs me-1"></i> {{ etab.adresse }}
-                        </p>
-                        {% if etab.filieres|length > 0 %}
-                        <hr class="my-3" style="border-color:#f0f0f0;">
-                        <p class="small fw-bold mb-2" style="color:#344767;">
-                            <i class="fas fa-book me-1" style="color:#1A73E8;"></i>
-                            {{ etab.filieres|length }} filière{{ etab.filieres|length > 1 ? 's' : '' }} :
-                        </p>
-                        <div class="d-flex flex-wrap gap-1">
-                            {% for f in etab.filieres|slice(0,3) %}
-                                <span class="mk-badge-pill">{{ f.nom }}</span>
-                            {% endfor %}
-                            {% if etab.filieres|length > 3 %}
-                                <span class="mk-badge-pill" style="background:#f0f0f0;color:#7b809a;">+{{ etab.filieres|length - 3 }}</span>
-                            {% endif %}
-                        </div>
-                        {% else %}
-                        <p class="text-muted small mb-0"><em>Aucune filière référencée</em></p>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-        {% endif %}
-
     </div>
 </section>
 
+<section class="mk-section" style="background:#f8f9fa;">
+    <div class="container">
+        <div class="row g-4">
+            {% for etablissement in etablissements %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0" style="border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,.07);transition:transform .2s,box-shadow .2s;overflow:hidden;" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 32px rgba(26,115,232,.15)'" onmouseout="this.style.transform='';this.style.boxShadow='0 4px 20px rgba(0,0,0,.07)'">
+                    <div style="height:5px;background:linear-gradient(90deg,#43a047,#66bb6a);"></div>
+                    <div class="card-body p-4">
+                        {% set img = etablissement.imageFilename %}
+                        <div style="width:100%;height:120px;border-radius:18px;overflow:hidden;background:#fff;flex-shrink:0;border:2px solid rgba(67,160,71,.15);margin-bottom:14px;">
+                            <img
+                                src="{{ img ? asset('img/photos/' ~ img) : asset('img/photos/unsplash-1.jpg') }}"
+                                alt="Image établissement"
+                                style="width:100%;height:100%;object-fit:cover;"
+                            />
+                        </div>
+
+                        <div>
+                            <h6 class="fw-bold mb-1" style="color:#1a202c;font-size:.95rem;">{{ etablissement.nom }}</h6>
+                            <div class="text-muted" style="font-size:.78rem;"><i class="fas fa-city fa-xs me-1"></i>{{ etablissement.ville }}</div>
+                            <div class="text-muted" style="font-size:.75rem;"><i class="fas fa-map-marker-alt fa-xs me-1"></i>{{ etablissement.adresse }}</div>
+                        </div>
+                        {% if etablissement.filieres is defined and etablissement.filieres|length > 0 %}
+                        <div class="mb-3 p-2 rounded-2" style="background:#f1f8f1;font-size:.8rem;color:#2e7d32;font-weight:500;">
+                            <i class="fas fa-layer-group me-1"></i>{{ etablissement.filieres|length }} filière{{ etablissement.filieres|length > 1 ? 's' : '' }} disponible{{ etablissement.filieres|length > 1 ? 's' : '' }}
+                        </div>
+                        {% endif %}
+                        <a href="{{ path('front_etablissement_details_show', {'id': etablissement.id}) }}" class="btn btn-sm w-100" style="background:linear-gradient(135deg,#43a047,#66bb6a);color:#fff;border:none;border-radius:8px;font-size:.8rem;">Voir les détails</a>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+
+            <div class="col-12 text-center py-5 text-muted">
+                <i class="fas fa-inbox fa-3x mb-3 d-block opacity-25"></i>
+                Aucun établissement disponible pour le moment.
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
 {% endblock %}

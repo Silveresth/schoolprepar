@@ -1,0 +1,37 @@
+{% extends 'front/base.html.twig' %}
+{% block title %}Webinaires — SchoolPrepar{% endblock %}
+
+{% block body %}
+<section class="mk-hero" style="min-height:35vh;padding:7rem 0 3rem;">
+    <div class="container">
+        <div class="mk-hero-content">
+            <span class="mk-badge-pill mb-2 d-inline-block" style="background:rgba(255,255,255,.2);color:#fff;">
+                <i class="fas fa-video me-2"></i>Webinaires
+            </span>
+            <h1>Webinaires & Replays</h1>
+            <p>Le projet réutilise les événements comme webinaires dans l’interface.</p>
+        </div>
+    </div>
+</section>
+
+<section class="mk-section" style="background:#f8f9fa;">
+    <div class="container">
+        <div class="row g-4">
+            {% for evenement in evenements %}
+                <div class="col-md-6 col-lg-4">
+                    <div class="mk-card card h-100">
+                        <div class="card-body p-4">
+                            <div class="fw-bold">{{ evenement.titre }}</div>
+                            <div class="text-muted small">{{ evenement.dateDebut|date('d/m/Y H:i') }} — {{ evenement.lieu }}</div>
+                            <a href="{{ path('front_webinaires_show', {'id': evenement.id}) }}" class="btn btn-sm btn-outline-primary mt-3 w-100">Voir</a>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="col-12 text-center py-5 text-muted">Aucun webinaire disponible.</div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}
+

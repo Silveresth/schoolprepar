@@ -1,0 +1,44 @@
+{%  extends 'admin/base.html.twig' %}
+{% block title %}Détail Rendez-vous{% endblock %}
+{% block content %}
+<div class="container-fluid p-0">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3">📅 Détail Rendez-vous</h1>
+        <div>
+<a href="{{ path('admin_rendez_vous_edit', {'id': item.id}) }}" class="btn btn-warning">✏️ Modifier</a>
+            <a href="{{ path('admin_rendez_vous_index') }}" class="btn btn-secondary">← Retour</a>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-4">ID</dt>
+                <dd class="col-sm-8">{{ item.id }}</dd>
+                        <dt class="col-sm-4">Élève</dt>
+                            <dd class="col-sm-8">{{ item.idEleve.nomComplet }}</dd>
+
+                        <dt class="col-sm-4">Mentor</dt>
+                         <dd class="col-sm-8">{{ item.idMentor.utilisateur.nomComplet }}</dd>
+
+                        <dt class="col-sm-4">Date</dt>
+                        <dd class="col-sm-8">{{ item.date|date('d/m/Y H:i') }}</dd>
+
+                        <dt class="col-sm-4">Statut</dt>
+                            <dd class="col-sm-8">
+                            <span class="badge bg-{{ item.statut == 'confirme' ? 'success' : (item.statut == 'annule' ? 'danger' : 'warning') }}">
+                                {{ item.statut|replace({'_': ' '})|capitalize }}
+                            </span>
+                        </dd>
+
+
+            </dl>
+            <form method="post" action="{{ path('admin_rendez_vous_delete', {'id': item.id}) }}"
+
+                  onsubmit="return confirm('Supprimer cet élément ?')">
+                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ item.id) }}">
+                <button type="submit" class="btn btn-danger btn-sm">🗑️ Supprimer</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -10,7 +10,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted('ROLE_ADMIN')]
 #[Route('/admin/etablissement')]
 class AdminEtablissementController extends AbstractController
 {
@@ -30,8 +32,24 @@ class AdminEtablissementController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $imageFile = $form->get('imageFile')->getData();
+            if ($imageFile) {
+                $uploadsDir = $this->getParameter('kernel.project_dir') . '/public/img/photos';
+                if (!is_dir($uploadsDir)) {
+                    mkdir($uploadsDir, 0775, true);
+                }
+
+                $originalExtension = $imageFile->guessExtension() ?: $imageFile->getClientOriginalExtension();
+                $safeExtension = $originalExtension ? strtolower($originalExtension) : 'jpg';
+                $newFilename = uniqid('etab_', true) . '.' . $safeExtension;
+
+                $imageFile->move($uploadsDir, $newFilename);
+                $etablissement->setImageFilename($newFilename);
+            }
+
             $em->persist($etablissement);
             $em->flush();
+
             $this->addFlash('success', 'Établissement créé avec succès.');
             return $this->redirectToRoute('admin_etablissement_index');
         }
@@ -55,8 +73,24 @@ class AdminEtablissementController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $imageFile = $form->get('imageFile')->getData();
+            if ($imageFile) {
+                $uploadsDir = $this->getParameter('kernel.project_dir') . '/public/img/photos';
+                if (!is_dir($uploadsDir)) {
+                    mkdir($uploadsDir, 0775, true);
+                }
+
+                $originalExtension = $imageFile->guessExtension() ?: $imageFile->getClientOriginalExtension();
+                $safeExtension = $originalExtension ? strtolower($originalExtension) : 'jpg';
+                $newFilename = uniqid('etab_', true) . '.' . $safeExtension;
+
+                $imageFile->move($uploadsDir, $newFilename);
+                $etablissement->setImageFilename($newFilename);
+            }
+
             $em->flush();
             $this->addFlash('success', 'Établissement modifié.');
+
             return $this->redirectToRoute('admin_etablissement_index');
         }
 

@@ -12,7 +12,22 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: FiliereRepository::class)]
 class Filiere
 {
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $imageFilename = null;
+
+    public function getImageFilename(): ?string
+    {
+        return $this->imageFilename;
+    }
+
+    public function setImageFilename(?string $imageFilename): static
+    {
+        $this->imageFilename = $imageFilename;
+        return $this;
+    }
+
     #[ORM\Id]
+
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;

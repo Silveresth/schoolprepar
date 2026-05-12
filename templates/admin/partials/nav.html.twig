@@ -1,12 +1,30 @@
 <nav class="navbar navbar-expand navbar-light navbar-bg">
-    <a class="sidebar-toggle js-sidebar-toggle">
-        <i class="hamburger align-self-center"></i>
-    </a>
     <div class="navbar-collapse collapse">
         <ul class="navbar-nav navbar-align">
-            <li class="nav-item">
-                <span class="text-dark">Administrateur</span>
+
+            {# Utilisateur connecté #}
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-bs-toggle="dropdown">
+                    <i class="align-middle me-1" data-feather="user"></i>
+                    <span class="visually-hidden">Menu utilisateur</span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-end">
+                    {% if app.user %}
+                        <span class="dropdown-item-text text-muted small">{{ app.user.email }}</span>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{{ path('home') }}">
+                            <i class="align-middle me-1" data-feather="external-link"></i> Voir le site
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item text-danger" href="{{ path('app_logout') }}">
+                            <i class="align-middle me-1" data-feather="log-out"></i> Déconnexion
+                        </a>
+                    {% else %}
+                        <a class="dropdown-item" href="{{ path('app_login') }}">Se connecter</a>
+                    {% endif %}
+                </div>
             </li>
+
         </ul>
     </div>
 </nav>

@@ -1,0 +1,33 @@
+{%  extends 'admin/base.html.twig' %}
+{% block title %}Détail Message{% endblock %}
+{% block content %}
+<div class="container-fluid p-0">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3">✉️ Détail Message</h1>
+        <div>
+<a href="{{ path('admin_message_edit', {'id': item.id}) }}" class="btn btn-warning">✏️ Modifier</a>
+            <a href="{{ path('admin_message_index') }}" class="btn btn-secondary">← Retour</a>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-4">ID</dt>
+                <dd class="col-sm-8">{{ item.id }}</dd>
+                        <dt class="col-sm-4">Expéditeur</dt>
+                        <dd class="col-sm-8">{{{ item.expediteur.nomComplet }}}</dd>
+                        <dt class="col-sm-4">Destinataire</dt>
+                        <dd class="col-sm-8">{{{ item.destinataire.nomComplet }}}</dd>
+                        <dt class="col-sm-4">Contenu</dt>
+                        <dd class="col-sm-8">{{{ item.contenu }}}</dd>
+
+            </dl>
+            <form method="post" action="{{ path('admin_message_delete', {{ 'id': item.id }}) }}"
+                  onsubmit="return confirm('Supprimer cet élément ?')">
+                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ item.id) }}">
+                <button type="submit" class="btn btn-danger btn-sm">🗑️ Supprimer</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

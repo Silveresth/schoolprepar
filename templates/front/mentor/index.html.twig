@@ -1,0 +1,56 @@
+{% extends 'front/base.html.twig' %}
+{% block title %}Mentors — SchoolPrepar{% endblock %}
+
+{% block body %}
+<section class="mk-hero" style="min-height:40vh;padding:7rem 0 3rem;">
+    <div class="container">
+        <div class="mk-hero-content">
+            <h1>🧑‍🏫 Nos Mentors</h1>
+            <p>Des experts prêts à vous guider dans votre orientation</p>
+        </div>
+    </div>
+</section>
+
+<section class="mk-section" style="background:#f8f9fa;">
+    <div class="container">
+        <div class="row g-4">
+            {% for mentor in mentors %}
+            <div class="col-md-6 col-lg-4">
+                <div class="mk-card card h-100">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <div class="mk-card-icon bg-gradient-dark mb-0" style="width:52px;height:52px;flex-shrink:0;font-size:1.3rem;">
+                                👤
+                            </div>
+                            <div>
+                                <h6 class="fw-bold mb-0">{{ mentor.utilisateur.nomComplet }}</h6>
+                                <span class="mk-badge-pill">{{ mentor.specialite }}</span>
+                            </div>
+                        </div>
+                        <p class="text-muted small mb-3" style="line-height:1.6;">
+                            {{ mentor.bio|slice(0,120) }}…
+                        </p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <strong class="text-primary">{{ mentor.tarif|number_format(0, ',', ' ') }} FCFA/h</strong>
+                            <span class="text-warning small">
+                                {% for i in 1..5 %}⭐{% endfor %}
+                                ({{ mentor.avis|length }})
+                            </span>
+                        </div>
+                        <a href="{{ path('front_mentor_show', {'id': mentor.id}) }}"
+                           class="mk-btn-primary mt-3 w-100" style="padding:8px 16px;font-size:.8rem;justify-content:center;">
+                            Voir le profil
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="col-12 text-center py-5 text-muted">
+                <i class="fas fa-user-slash fa-3x mb-3 d-block opacity-25"></i>
+                Aucun mentor disponible pour le moment.
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

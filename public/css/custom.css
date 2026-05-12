@@ -1,0 +1,111 @@
+/*
+  custom.css
+  - Styles ciblés pour améliorer l'apparence sans casser AdminKit/Bootstrap.
+  - Chargé APRÈS app.css.
+*/
+
+:root {
+  --sp-primary: #3b7ddd;
+  --sp-primary-2: #326abc;
+  --sp-success: #1cbb8c;
+  --sp-muted: #6c757d;
+  --sp-bg-soft: #f5f7fb;
+  --sp-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  --sp-radius: 14px;
+}
+
+/* Typographie globale */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  letter-spacing: -0.02em;
+}
+
+/* Cartes: uniforme + légère amélioration */
+.card {
+  border-radius: var(--sp-radius);
+  box-shadow: 0 1px 0 rgba(0,0,0,0.02);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.card.card-shadow,
+.card.shadow-soft {
+  box-shadow: var(--sp-shadow);
+}
+
+.card-header {
+  border-radius: calc(var(--sp-radius) - 4px) calc(var(--sp-radius) - 4px) 0 0;
+}
+
+/* Boutons */
+.btn {
+  border-radius: 10px;
+}
+
+.btn-primary {
+  background: var(--sp-primary);
+  border-color: var(--sp-primary);
+}
+
+.btn-primary:hover {
+  background: var(--sp-primary-2);
+  border-color: var(--sp-primary-2);
+}
+
+/* Alertes */
+.alert {
+  border-radius: 12px;
+}
+
+/* Tables */
+.table {
+  border-radius: var(--sp-radius);
+  overflow: hidden;
+}
+
+.table thead th {
+  background: rgba(59, 125, 221, 0.08);
+  color: #1f2a44;
+  font-weight: 700;
+}
+
+.table tbody tr:hover {
+  background: rgba(59, 125, 221, 0.04);
+}
+
+/* Avatars / images */
+.img-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Formulaires */
+.form-control {
+  border-radius: 10px;
+}
+
+.form-control:focus {
+  border-color: rgba(59, 125, 221, 0.6);
+  box-shadow: 0 0 0 0.2rem rgba(59, 125, 221, 0.18);
+}
+
+/* Liens */
+a {
+  text-decoration-thickness: 1px;
+}
+
+/* Footer: optionnel (front) */
+.mk-footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+/* Ajuste hauteur du contenu admin (minime) */
+.wrapper .content {
+  padding-bottom: 2rem;
+}
+

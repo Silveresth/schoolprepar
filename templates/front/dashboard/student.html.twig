@@ -1,0 +1,199 @@
+{% extends 'front/base.html.twig' %}
+{% block title %}Mon espace étudiant — SchoolPrepar{% endblock %}
+
+{% block body %}
+<!-- Hero -->
+<section class="mk-hero" style="min-height:32vh;padding:7rem 0 3rem;">
+    <div class="container">
+        <div class="mk-hero-content">
+            <h1>👋 Bonjour, {{ user.prenom }} !</h1>
+            <p class="mb-3">Bienvenue dans votre espace étudiant. Découvrez des établissements, des filières et des mentors pour vous accompagner.</p>
+            <div class="d-flex flex-wrap gap-2">
+                <a href="{{ path('filiere') }}" class="mk-btn-primary">
+                    📚 Explorer les filières
+                </a>
+                <a href="{{ path('etablissement') }}" class="mk-btn-outline">
+                    🏫 Voir les établissements
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stats rapides -->
+<section style="background:#fff;padding:2rem 0;border-bottom:1px solid #f0f0f0;">
+    <div class="container">
+        <div class="row g-3 text-center">
+            <div class="col-6 col-md-3">
+                <div class="mk-card card p-3">
+                    <div class="fs-1 mb-1">🏫</div>
+                    <div class="fw-bold text-primary">Établissements</div>
+                    <div class="text-muted small">Trouvez votre école</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="mk-card card p-3">
+                    <div class="fs-1 mb-1">📚</div>
+                    <div class="fw-bold text-success">Filières</div>
+                    <div class="text-muted small">Choisissez votre voie</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="mk-card card p-3">
+                    <div class="fs-1 mb-1">🧑‍🏫</div>
+                    <div class="fw-bold text-warning">Mentors</div>
+                    <div class="text-muted small">Soyez accompagné</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="mk-card card p-3">
+                    <div class="fs-1 mb-1">📋</div>
+                    <div class="fw-bold text-danger">Quiz</div>
+                    <div class="text-muted small">Testez vos aptitudes</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contenu principal -->
+<section style="background:#f8f9fa;padding:3rem 0;">
+    <div class="container">
+        <div class="row g-4">
+
+            <!-- Actions rapides -->
+            <div class="col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-header bg-white border-0 pt-4 pb-0">
+                        <h5 class="fw-bold mb-0">⚡ Actions rapides</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="list-group list-group-flush">
+                            <a href="{{ path('front_quiz_index') }}" class="list-group-item list-group-item-action d-flex align-items-center gap-3 py-3">
+                                <span class="fs-4">📋</span>
+                                <div>
+                                    <div class="fw-semibold">Passer un quiz d'orientation</div>
+                                    <div class="text-muted small">Découvrez la filière qui vous correspond</div>
+                                </div>
+                            </a>
+                            <a href="{{ path('front_mentor_index') }}" class="list-group-item list-group-item-action d-flex align-items-center gap-3 py-3">
+                                <span class="fs-4">🧑‍🏫</span>
+                                <div>
+                                    <div class="fw-semibold">Trouver un mentor</div>
+                                    <div class="text-muted small">Prenez un rendez-vous</div>
+                                </div>
+                            </a>
+                            <a href="{{ path('front_forum_index') }}" class="list-group-item list-group-item-action d-flex align-items-center gap-3 py-3">
+                                <span class="fs-4">💬</span>
+                                <div>
+                                    <div class="fw-semibold">Forum d'entraide</div>
+                                    <div class="text-muted small">Posez vos questions</div>
+                                </div>
+                            </a>
+                            <a href="{{ path('front_evenement_index') }}" class="list-group-item list-group-item-action d-flex align-items-center gap-3 py-3">
+                                <span class="fs-4">📅</span>
+                                <div>
+                                    <div class="fw-semibold">Événements & Salons</div>
+                                    <div class="text-muted small">Ne manquez rien</div>
+                                </div>
+                            </a>
+                            <a href="{{ path('front_profile_index') }}" class="list-group-item list-group-item-action d-flex align-items-center gap-3 py-3">
+                                <span class="fs-4">👤</span>
+                                <div>
+                                    <div class="fw-semibold">Mon profil</div>
+                                    <div class="text-muted small">Gérer mes informations</div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Prochains événements -->
+            <div class="col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-header bg-white border-0 pt-4 pb-0 d-flex justify-content-between align-items-center">
+                        <h5 class="fw-bold mb-0">📅 Prochains événements</h5>
+                        <a href="{{ path('front_evenement_index') }}" class="btn btn-sm btn-outline-primary">Voir tout</a>
+                    </div>
+                    <div class="card-body">
+                        {% if prochainsEvenements is empty %}
+                            <div class="text-center text-muted py-4">
+                                <div class="fs-1">📭</div>
+                                <p>Aucun événement à venir</p>
+                            </div>
+                        {% else %}
+                            {% for evt in prochainsEvenements %}
+                            <div class="d-flex align-items-start gap-3 mb-3 pb-3 {{ not loop.last ? 'border-bottom' : '' }}">
+                                <div class="text-center" style="min-width:48px;">
+                                    <div class="fw-bold text-primary" style="font-size:1.3rem;">
+                                        {{ evt.dateDebut is defined ? evt.dateDebut|date('d') : '—' }}
+                                    </div>
+                                    <div class="text-muted small text-uppercase">
+                                        {{ evt.dateDebut is defined ? evt.dateDebut|date('M') : '' }}
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="fw-semibold">{{ evt.titre ?? evt.nom ?? 'Événement' }}</div>
+                                    <div class="text-muted small">{{ evt.lieu ?? '' }}</div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Derniers forums + Mentors -->
+            <div class="col-lg-4">
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header bg-white border-0 pt-4 pb-0 d-flex justify-content-between align-items-center">
+                        <h5 class="fw-bold mb-0">💬 Forum récent</h5>
+                        <a href="{{ path('front_forum_index') }}" class="btn btn-sm btn-outline-primary">Voir tout</a>
+                    </div>
+                    <div class="card-body">
+                        {% if derniersForums is empty %}
+                            <p class="text-muted text-center py-3">Aucun sujet pour l'instant.</p>
+                        {% else %}
+                            {% for forum in derniersForums %}
+                            <div class="d-flex align-items-center gap-2 mb-2">
+                                <span class="text-primary">💬</span>
+                                <span class="small fw-semibold">{{ forum.titre ?? forum.sujet ?? forum.titre }}</span>
+                            </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Mentors disponibles -->
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-white border-0 pt-3 pb-0 d-flex justify-content-between align-items-center">
+                        <h6 class="fw-bold mb-0">🧑‍🏫 Mentors disponibles</h6>
+                        <a href="{{ path('front_mentor_index') }}" class="btn btn-sm btn-outline-success">Voir tout</a>
+                    </div>
+                    <div class="card-body">
+                        {% if mentors is empty %}
+                            <p class="text-muted text-center py-3">Aucun mentor pour l'instant.</p>
+                        {% else %}
+                            {% for mentor in mentors %}
+                            <div class="d-flex align-items-center gap-2 mb-2">
+                                <div class="rounded-circle bg-success text-white d-flex align-items-center justify-content-center" style="width:32px;height:32px;font-size:.75rem;font-weight:700;">
+                                    {{ mentor.utilisateur.prenom[0] ?? '?' }}
+                                </div>
+                                <div class="flex-fill">
+                                    <div class="fw-semibold small">{{ mentor.utilisateur.nomComplet }}</div>
+                                    <div class="text-muted" style="font-size:.75rem;">{{ mentor.specialite }}</div>
+                                </div>
+                                <a href="{{ path('front_mentor_show', {'id': mentor.id}) }}"
+                                   class="btn btn-xs btn-outline-success" style="font-size:.7rem;padding:2px 6px;">Voir</a>
+                            </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+{% endblock %}

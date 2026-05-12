@@ -2,47 +2,154 @@
 <html lang="fr">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Connexion - SchoolPrepar Admin</title>
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Connexion — SchoolPrepar</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body { background: #f5f5f5; }
-        .login-card { max-width: 400px; margin: 100px auto; }
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f0f2f5;
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+        .left-panel {
+            background: linear-gradient(135deg, #1A73E8 0%, #0d47a1 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem;
+            color: #fff;
+        }
+        .left-panel .logo { font-size: 2.5rem; font-weight: 800; margin-bottom: .5rem; }
+        .left-panel .logo span { color: #90caf9; }
+        .left-panel p { opacity: .8; font-size: 1.05rem; text-align: center; max-width: 320px; }
+        .feature-list { list-style: none; padding: 0; margin: 2rem 0 0; text-align: left; }
+        .feature-list li { display: flex; align-items: center; gap: .75rem; margin-bottom: .75rem; font-size: .95rem; opacity: .9; }
+        .feature-list .icon { width: 32px; height: 32px; background: rgba(255,255,255,.15); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .right-panel {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        .login-box {
+            width: 100%;
+            max-width: 400px;
+        }
+        .login-box h2 { font-size: 1.8rem; font-weight: 700; color: #1a202c; margin-bottom: .25rem; }
+        .login-box .subtitle { color: #718096; margin-bottom: 2rem; }
+        .form-control {
+            border: 1.5px solid #e2e8f0;
+            border-radius: 10px;
+            padding: .75rem 1rem;
+            font-size: .95rem;
+            transition: border-color .2s;
+        }
+        .form-control:focus { border-color: #1A73E8; box-shadow: 0 0 0 3px rgba(26,115,232,.12); }
+        .input-group-text { background: #f7fafc; border: 1.5px solid #e2e8f0; border-right: none; border-radius: 10px 0 0 10px; color: #a0aec0; }
+        .input-group .form-control { border-left: none; border-radius: 0 10px 10px 0; }
+        .btn-login {
+            background: linear-gradient(135deg, #1A73E8, #0d47a1);
+            border: none;
+            border-radius: 10px;
+            padding: .85rem;
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: .3px;
+            transition: all .2s;
+        }
+        .btn-login:hover { transform: translateY(-1px); box-shadow: 0 4px 15px rgba(26,115,232,.35); }
+        .divider { display: flex; align-items: center; gap: 1rem; color: #a0aec0; font-size: .85rem; margin: 1.5rem 0; }
+        .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: #e2e8f0; }
+        @media (max-width: 768px) {
+            body { grid-template-columns: 1fr; }
+            .left-panel { display: none; }
+        }
     </style>
 </head>
 <body>
-<div class="login-card">
-    <div class="text-center mb-4">
-        <h1 class="h3">🎓 SchoolPrepar</h1>
-        <p class="text-muted">Administration</p>
-    </div>
-    <div class="card">
-        <div class="card-header"><h5 class="card-title mb-0">Connexion</h5></div>
-        <div class="card-body">
-            {% if error %}
-                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-            {% endif %}
-            <form method="post" action="{{ path('app_login') }}">
-                <div class="mb-3">
-                    <label for="email" class="form-label">Email</label>
-                    <input type="email" id="email" name="_username" class="form-control"
-                           value="{{ last_username }}" autocomplete="email" required autofocus>
+<div class="left-panel">
+    <div class="logo">🎓 School<span>Prepar</span></div>
+    <p>Votre plateforme d'orientation scolaire et professionnelle au Togo</p>
+    <ul class="feature-list">
+        <li><div class="icon">📚</div> Explorer des centaines de filières</li>
+        <li><div class="icon">🏫</div> Découvrir les établissements partenaires</li>
+        <li><div class="icon">🧑‍🏫</div> Échanger avec des conseillers experts</li>
+        <li><div class="icon">📅</div> Participer à des événements d'orientation</li>
+    </ul>
+</div>
+
+<div class="right-panel">
+    <div class="login-box">
+        <a href="{{ path('home') }}" class="text-muted small d-flex align-items-center gap-1 mb-4" style="text-decoration:none;">
+            <i class="fas fa-arrow-left" style="font-size:.75rem;"></i> Retour au site
+        </a>
+        <h2>Bon retour 👋</h2>
+        <p class="subtitle">Connectez-vous à votre compte SchoolPrepar</p>
+
+        {% if error %}
+        <div class="alert alert-danger d-flex align-items-center gap-2 mb-3" style="border-radius:10px;font-size:.9rem;">
+            <i class="fas fa-exclamation-circle"></i>
+            {{ error.messageKey|trans(error.messageData, 'security') }}
+        </div>
+        {% endif %}
+
+        {% for msg in app.flashes('success') %}
+        <div class="alert alert-success mb-3" style="border-radius:10px;font-size:.9rem;">{{ msg }}</div>
+        {% endfor %}
+
+        <form method="post" action="{{ path('app_login') }}" novalidate>
+            <div class="mb-3">
+                <label class="form-label fw-500" style="font-size:.9rem;color:#4a5568;">Adresse email</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-envelope fa-sm"></i></span>
+                    <input type="email" name="_username" class="form-control"
+                           value="{{ last_username }}" placeholder="votre@email.com"
+                           autocomplete="email" autofocus required>
                 </div>
-                <div class="mb-3">
-                    <label for="password" class="form-label">Mot de passe</label>
-                    <input type="password" id="password" name="_password" class="form-control"
-                           autocomplete="current-password" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label fw-500" style="font-size:.9rem;color:#4a5568;">Mot de passe</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-lock fa-sm"></i></span>
+                    <input type="password" name="_password" id="pwd" class="form-control"
+                           placeholder="••••••••" autocomplete="current-password" required>
+                    <button type="button" class="input-group-text border-start-0" style="border-radius:0 10px 10px 0;background:#f7fafc;border:1.5px solid #e2e8f0;cursor:pointer;" onclick="togglePwd()">
+                        <i class="fas fa-eye fa-sm" id="eyeIcon" style="color:#a0aec0;"></i>
+                    </button>
                 </div>
-                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-                <button type="submit" class="btn btn-primary w-100">Se connecter</button>
-            </form>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div class="form-check mb-0">
+                    <input type="checkbox" name="_remember_me" id="remember_me" class="form-check-input">
+                    <label for="remember_me" class="form-check-label" style="font-size:.875rem;color:#718096;">Se souvenir de moi</label>
+                </div>
+            </div>
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+            <button type="submit" class="btn btn-login btn-primary w-100 text-white">
+                Se connecter <i class="fas fa-arrow-right ms-2"></i>
+            </button>
+        </form>
+
+        <div class="divider">ou</div>
+        <div class="text-center" style="font-size:.9rem;color:#718096;">
+            Pas encore de compte ?
+            <a href="{{ path('app_register') }}" style="color:#1A73E8;font-weight:600;text-decoration:none;">Créer un compte</a>
         </div>
     </div>
-    <div class="text-center mt-3">
-        <a href="{{ path('home') }}" class="text-muted small">← Retour au site</a>
-    </div>
 </div>
-<script src="{{ asset('js/app.js') }}"></script>
+<script>
+function togglePwd() {
+    const p = document.getElementById('pwd');
+    const i = document.getElementById('eyeIcon');
+    p.type = p.type === 'password' ? 'text' : 'password';
+    i.classList.toggle('fa-eye'); i.classList.toggle('fa-eye-slash');
+}
+</script>
 </body>
 </html>

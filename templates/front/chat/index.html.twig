@@ -1,0 +1,90 @@
+{% extends 'front/base.html.twig' %}
+{% block title %}Messagerie — SchoolPrepar{% endblock %}
+
+{% block body %}
+<section class="mk-hero" style="min-height:30vh;padding:6rem 0 2.5rem;">
+    <div class="container">
+        <div class="mk-hero-content">
+            <span class="mk-badge-pill mb-2 d-inline-block" style="background:rgba(255,255,255,.2);color:#fff;">
+                <i class="fas fa-comment-dots me-2"></i>Messagerie privée
+            </span>
+            <h1>Contacter un conseiller</h1>
+            <p>Choisissez un conseiller pour démarrer une conversation privée.</p>
+        </div>
+    </div>
+</section>
+
+<section class="mk-section" style="background:#f8f9fa;">
+    <div class="container">
+        {% if mentors is empty %}
+        <div class="text-center py-5 text-muted">
+            <i class="fas fa-user-slash fa-3x mb-3 d-block opacity-25"></i>
+            <p>Aucun conseiller disponible pour le moment.</p>
+        </div>
+        {% else %}
+        <div class="row g-4">
+            {% for mentor in mentors %}
+            {% if mentor.utilisateur.id != app.user.id %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm" style="border-radius:16px;overflow:hidden;transition:transform .2s,box-shadow .2s;" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 32px rgba(26,115,232,.15)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+                    <div style="height:4px;background:linear-gradient(90deg,#1A73E8,#49a3f1);"></div>
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#1A73E8,#49a3f1);display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.4rem;font-weight:800;flex-shrink:0;">
+                                {{ mentor.utilisateur.prenom|default('')|trim|slice(0, 1) }}
+
+                            </div>
+                            <div class="flex-fill">
+                                <div class="fw-bold" style="color:#1a202c;">{{ mentor.utilisateur.nomComplet }}</div>
+                                <div class="d-flex align-items-center gap-1 mt-1">
+                                    <span style="width:7px;height:7px;border-radius:50%;background:#22c55e;display:inline-block;"></span>
+                                    <span style="font-size:.75rem;color:#22c55e;font-weight:500;">Disponible</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-2 p-2 rounded-2" style="background:#f0f7ff;font-size:.8rem;color:#1A73E8;font-weight:500;">
+                            <i class="fas fa-graduation-cap me-1"></i>{{ mentor.specialite }}
+                        </div>
+
+                        {% if mentor.bio %}
+                        <p class="text-muted mb-3" style="font-size:.82rem;line-height:1.6;">
+                            {{ mentor.bio|slice(0, 90) }}…
+                        </p>
+                        {% endif %}
+
+                        <div class="d-flex align-items-center justify-content-between mb-3">
+                            <span style="font-size:.8rem;color:#718096;">
+                                <i class="fas fa-star text-warning me-1"></i>
+                                {% set note_moy = 0 %}
+                                {% if mentor.avis|length > 0 %}
+                                    {% set total = 0 %}
+                                    {% for a in mentor.avis %}{% set total = total + a.note %}{% endfor %}
+                                    {{ (total / mentor.avis|length)|number_format(1) }} ({{ mentor.avis|length }} avis)
+                                {% else %}
+                                    Pas encore d'avis
+                                {% endif %}
+                            </span>
+                            <span style="font-size:.8rem;font-weight:600;color:#4a5568;">{{ mentor.tarif|number_format(0,',',' ') }} FCFA/h</span>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <a href="{{ path('front_chat_conversation', {'id': mentor.utilisateur.id}) }}"
+                               class="btn btn-primary flex-fill" style="border-radius:10px;font-size:.85rem;">
+                                <i class="fas fa-paper-plane me-1"></i> Message
+                            </a>
+                            <a href="{{ path('front_mentor_show', {'id': mentor.id}) }}"
+                               class="btn btn-outline-secondary" style="border-radius:10px;font-size:.85rem;width:44px;" title="Voir le profil">
+                                <i class="fas fa-user"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

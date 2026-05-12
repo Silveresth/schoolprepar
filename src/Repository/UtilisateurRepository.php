@@ -5,24 +5,23 @@ namespace App\Repository;
 use App\Entity\Utilisateur;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 
-class UtilisateurRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
+class UtilisateurRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Utilisateur::class);
     }
 
-    public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
+    /**
+     * Retourne tous les utilisateurs ayant un rôle conseiller ou mentor.
+     */
+    public function findConseillers(): array
     {
-        if (!$user instanceof Utilisateur) {
-            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', $user::class));
-        }
-        $user->setPassword($newHashedPassword);
-        $this->getEntityManager()->persist($user);
-        $this->getEntityManager()->flush();
+        return $this->createQueryBuilder('u')
+            ->where("u.role IN ('ROLE_CONSEILLER', 'ROLE_MENTOR')")
+            ->orderBy('u.nom', 'ASC')
+            ->getQuery()
+            ->getResult();
     }
 }

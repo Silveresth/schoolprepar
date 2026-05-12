@@ -1,0 +1,87 @@
+{% extends 'front/base.html.twig' %}
+{% block title %}Recommandations — SchoolPrepar{% endblock %}
+
+{% block body %}
+<section class="mk-hero" style="min-height:35vh;padding:7rem 0 3rem;">
+    <div class="container">
+        <div class="mk-hero-content">
+            <span class="mk-badge-pill mb-2 d-inline-block" style="background:rgba(255,255,255,.2);color:#fff;">
+                <i class="fas fa-wand-magic-sparkles me-2"></i>Parcours recommandé
+            </span>
+            <h1>Vos recommandations</h1>
+            <p>Une proposition de filières et d’étapes basée sur vos résultats (ou une estimation par défaut).</p>
+        </div>
+    </div>
+</section>
+
+<section class="mk-section" style="background:#f8f9fa;">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-5">
+                <div class="mk-card card">
+                    <div class="card-header"><h5 class="mb-0">Profil</h5></div>
+                    <div class="card-body p-4">
+                        {% if lastResult %}
+                            <div class="text-center mb-3">
+                                <div style="font-size:3rem;font-weight:800;color:#1A73E8;">{{ lastResult.score|number_format(0, ',', ' ') }}</div>
+                                <div class="text-muted">/100</div>
+                                <div class="small text-muted">Test : {{ lastResult.test.titre }}</div>
+                            </div>
+                        {% else %}
+                            <div class="alert alert-warning">Aucun résultat de test trouvé. Les recommandations sont basées sur une estimation générale.</div>
+                        {% endif %}
+
+                        <div class="alert alert-info mb-0">
+                            <strong>Niveau cible :</strong> {{ niveauCible }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-7">
+                <div class="mk-card card">
+                    <div class="card-header"><h5 class="mb-0">Filières proposées</h5></div>
+                    <div class="card-body p-4">
+                        {% if filieres|length > 0 %}
+                            <div class="row g-3">
+                                {% for f in filieres %}
+                                    <div class="col-md-6">
+                                        <div class="border rounded-3 p-3 h-100 bg-white">
+                                            <div class="fw-bold">{{ f.nom }}</div>
+                                            <div class="text-muted small">{{ f.etablissement.nom }}</div>
+                                            <div class="mt-2"><span class="mk-badge-pill">{{ f.niveauRequis }}</span></div>
+                                            <a href="{{ path('front_filiere_details_show', {'id': f.id}) }}" class="btn btn-sm btn-outline-primary mt-2 w-100">Voir détails</a>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <p class="text-muted mb-0">Aucune filière correspondant au filtre pour le moment.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-4 mk-card card">
+            <div class="card-header"><h5 class="mb-0">Événements à ne pas manquer</h5></div>
+            <div class="card-body p-4">
+                <div class="row g-3">
+                    {% for ev in evenements|slice(0,6) %}
+                        <div class="col-md-4">
+                            <div class="border rounded-3 p-3 bg-white h-100">
+                                <div class="fw-bold">{{ ev.titre }}</div>
+                                <div class="text-muted small">{{ ev.dateDebut|date('d/m/Y H:i') }} — {{ ev.lieu }}</div>
+                                <a href="{{ path('front_evenement_show', {'id': ev.id}) }}" class="btn btn-sm btn-outline-info mt-2 w-100">Voir</a>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="col-12 text-muted">Aucun événement disponible.</div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
