@@ -1,4 +1,4 @@
-# SchoolPrepar — TP3 Symfony
+# SchoolPrepar — TP4 Symfony
 
 ## Installation
 
@@ -41,14 +41,4 @@ php -S localhost:8000 -t public/
 - Email : `ama.koffi@schoolprepar.tg`
 - Mot de passe : `password`
 
-## Structure des corrections TP3
 
-- `src/Entity/` — 4 entités corrigées (Filiere, Etablissement, Utilisateur, Evenement)
-- `src/Controller/Admin/` — 5 contrôleurs CRUD complets
-- `src/Controller/Front_office/` — 3 contrôleurs front avec données réelles
-- `src/Controller/Security/` — Authentification Symfony
-- `src/Form/` — 4 formulaires corrigés
-- `src/DataFixtures/` — 5+ données par entité
-- `templates/admin/` — Back-office AdminKit
-- `templates/front/` — Front-office Material Kit 2
-- `migrations/` — Migrations corrigées
